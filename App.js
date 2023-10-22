@@ -26,7 +26,7 @@ export default function App() {
             alignItems: "flex-start",
           }}
         >
-          <Text style={{ color: "white" }}>LetterBox</Text>
+          <Text style={{ color: "white" }}>SmartLetter</Text>
           <Text style={{ color: "white" }}>Bonne journée, Rosalie</Text>
         </View>
 
