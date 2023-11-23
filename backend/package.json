@@ -1,17 +1,28 @@
 {
-  "name": "express-test",
+  "name": "server-test",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is the backend server.",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon"
   },
-  "author": "",
+  "author": "Maxence Gueyffier",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2"
   },
   "devDependencies": {
+<<<<<<< HEAD
     "prisma": "^5.6.0"
+=======
+    "connect-livereload": "^0.6.1",
+    "cookie-parser": "^1.4.6",
+    "http-errors": "^2.0.0",
+    "livereload": "^0.9.3",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.0.1",
+    "path": "^0.12.7"
+>>>>>>> b09db1a91f07f5a5ae4cd8878c491adc12e7fc68
   }
 }
