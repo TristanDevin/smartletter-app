@@ -2,13 +2,14 @@ const express = require("express");
 var request = require('request');
 
 
-const app = express();
+const app = express();  
+app.use(express.json())
 const port = 3000;
 const address = `http://localhost:${port}`
 
 app.route('/data').post(async(req, res) => { 
   try{
-    console.log(req)
+    console.log(req.body)
   } catch(err){
     console.log(err)
   }
