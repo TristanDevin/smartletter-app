@@ -1,21 +1,16 @@
 version: '3'
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-    ports:
-      - "3000:3000"
-    depends_on:
-      - backend
-
   backend:
     build:
       context: ./backend
     ports:
-      - "8080:8080"
+      - "3000:3000"
     depends_on:
       - database
+    networks:
+      - mynetwork
+
 
   database:
     image: postgres:alpine
@@ -25,6 +20,15 @@ services:
     ports:
       - "5432:5432"  # Map the PostgreSQL port to the host machine
     environment:
-      - POSTGRES_DB=mydatabase
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=mypassword
+     - DATABASE_HOST="my-database"
+     - DATABASE_NAME="mydatabase"
+     - DATABASE_PASS="mypassword"
+     - DATABASE_PORT="5432"
+     - DATABASE_USER="myuser"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+

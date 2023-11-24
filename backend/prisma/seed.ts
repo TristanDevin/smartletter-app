@@ -5,7 +5,6 @@ const prisma = new PrismaClient();
 
 const messages = [
     {
-        id: 1,
         senderDevice: 'A',
         numColis: 1,
         numLetter: 1,
@@ -13,7 +12,6 @@ const messages = [
         retrieved: false
     },
     {
-        id: 2,
         senderDevice: 'B',
         numColis: 1,
         numLetter: 1,
