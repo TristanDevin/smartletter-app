@@ -1,23 +1,9 @@
 const express = require("express");
 var request = require('request');
-import { Pool, types } from "pg";
-import {
-  DATABASE_HOST,
-  DATABASE_NAME,
-  DATABASE_PASS,
-  DATABASE_PORT,
-  DATABASE_USER,
-} from "./env";
-
-const pool = new Pool({
-  user: DATABASE_USER,
-  host: DATABASE_HOST,
-  database: DATABASE_NAME,
-  password: DATABASE_PASS,
-  port: DATABASE_PORT,
-});
-
+require("dotenv").config();
 var fs = require('fs');
+
+const getMessages = require('./db.js');
 
 const app = express();  
 app.use(express.json());
@@ -77,7 +63,7 @@ app.route('/messages').get(async(req, res) => {
 });
 
 app.route('/').get((req, res) => {
-  res.send("Hello World !!");
+  res.send(getMessages());
 });
 app.route('/dev').get((req, res) => {
     res.send("test");    
