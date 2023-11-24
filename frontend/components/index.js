@@ -1,17 +1,47 @@
 import React, { useState } from "react";
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo package
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import ColisPage from "./colisPage";
 import { useNavigation } from "@react-navigation/native";
+import { BsBoxSeam } from "react-icons/bs";
+import DATA from "../data/HardData"
 
+
+
+
+function getLetter(DATA) {
+    var num = 0;
+    for (const element of DATA) {
+        if (element.recupere == false) {
+            num += element.letter;
+        }
+        
+    };
+    return (num.toString());
+};
+
+function getColis(DATA) {
+    var num = 0;
+    for (const element of DATA) {
+        if (element.recupere == false) {
+            num += element.colis;
+        }
+    };
+    return (num.toString());
+};
 
 export default function IndexPage() {
   const [popupVisible, setPopupVisible] = useState(false);
 
   const navigation = useNavigation();
+
+
+
+    //const numLetter = "5";
+    const numLetter = getLetter(DATA);
+    const numColis = getColis(DATA);
 
   const handleButtonClick = () => {
     setPopupVisible(true);
@@ -21,85 +51,104 @@ export default function IndexPage() {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "black" }}>
+    <View style={{ flex: 1, backgroundColor: "#1d4274" }}>
       {/* Top Bar */}
       <View
-        style={{
-          height: 50,
-          backgroundColor: "grey",
-          justifyContent: "flex-start",
-          alignItems: "flex-start",
-        }}
+        style={styles.topbar}
       >
+         
         <Text style={{ color: "white" }}>SmartLetter</Text>
         <Text style={{ color: "white" }}>Bonne journée, Rosalie</Text>
+              <Ionicons
+                  name="person-circle-outline"
+                  size={50}
+                  ></Ionicons>
+      </View>
+
+       {/* Menu bar */}
+      <View
+        style={styles.menuBar}
+
+      >
+        <View style={styles.menuContainerSelected}>
+          <Text style={styles.menuTextSelected} >Résumé</Text>
+        </View>
+        <View style={styles.menuContainer}>
+            <TouchableOpacity onPress={() => navigation.navigate('Historique')}>
+                <Text style={styles.menuText} >Historique</Text>
+            </TouchableOpacity>
+        </View>
+        <View style={styles.menuContainer}>
+            <TouchableOpacity onPress={() => navigation.navigate('TableauDeBord')}>
+                <Text style={styles.menuText} >Tableau de bord</Text>
+            </TouchableOpacity>
+        </View>
       </View>
 
       {/* Main Content */}
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <View style={{ width: "100%", marginBottom: 20 }}>
+              <View style={{ marginBottom: 20 }} >
+
+                  <Text style={{ color: "white", textAlign: "center", flex: 1, marginBottom: 30, fontSize: 40 }}>
+                Vous avez
+            </Text>
+
+
           <View
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.5)",
-              paddingTop: 40,
-              paddingBottom: 40,
-              shadowColor: "#000",
-              shadowOffset: { width: 2, height: 2 },
-              shadowOpacity: 0.5,
-              shadowRadius: 4,
-              marginBottom: 10,
-              position: "relative", // Ensure the button is positioned relative to this parent
-            }}
-          >
+            style={styles.container}
+                  >
+            <Ionicons
+                name="mail-outline"
+                size={120}
+                style={styles.containerImage}
+            />
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
               }}
-            >
-              <Text style={{ color: "white", textAlign: "center", flex: 1 }}>
-                Vous n'avez pas de nouveaux colis !
-              </Text>
-              <TouchableOpacity onPress={() => navigation.navigate('Colis')}>
-                <Ionicons
-                  name="arrow-forward-outline"
-                  size={24}
-                  color="white"
-                />
-              </TouchableOpacity>
+                      >
+              <View style={{flexDirection:"row"}}>
+                  <Text style={styles.containerText}>
+                     {numLetter}
+                  </Text>
+
+                  <Text style={styles.containerText}>
+                      lettres
+                  </Text>
+
+              </View>
+            
+
+
             </View>
+            
+
           </View>
           <View
-            style={{
-              backgroundColor: "rgba(255, 255, 255, 0.5)",
-              paddingTop: 40,
-              paddingBottom: 40,
-              shadowColor: "#000",
-              shadowOffset: { width: 2, height: 2 },
-              shadowOpacity: 0.5,
-              shadowRadius: 4,
-              marginBottom: 10,
-              position: "relative", // Ensure the button is positioned relative to this parent
-            }}
-          >
+            style={styles.container}
+            >
+              <BsBoxSeam style={styles.containerImage} size={150}/>
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
                 justifyContent: "center",
               }}
-            >
-              <Text style={{ color: "white", textAlign: "center", flex: 1 }}>
-                Vous n'avez pas de nouvelles lettres !
-              </Text>
-              <TouchableOpacity onPress={handleButtonClick}>
-                <Ionicons
-                  name="arrow-forward-outline"
-                  size={24}
-                  color="white"
-                />
-              </TouchableOpacity>
+             >
+            
+                <View style={{ flexDirection: "row" }}>
+                    <Text style={styles.containerText}>
+                        {numColis}
+                    </Text>
+
+                    <Text style={styles.containerText}>
+                        colis
+                    </Text>
+
+                </View>
+
             </View>
           </View>
         </View>
@@ -156,3 +205,130 @@ export default function IndexPage() {
     </View>
   );
 }
+
+
+const styles = StyleSheet.create({
+    topbar: {
+        height: 50,
+        flexDirection :"row",
+        backgroundColor: "#f8e499",
+        justifyContent: "space-between",
+        alignItems: "flex-start",
+
+        
+
+    },
+
+    menuBar: {
+        height: 50,
+        flexDirection: "row",
+        backgroundColor: "#1d4274",
+        justifyContent: "space-around",
+        alignItems: "flex-start",
+
+
+
+    },
+
+    menuText: {
+        color: "white",
+        textAlign: "center",
+        flex: 1,
+        fontSize: 25,
+        fontFamily: "URW Gothic L, sans-serif",
+
+
+    },
+
+    menuTextSelected: {
+        color: "#1d4274",
+        textAlign: "center",
+        flex: 1,
+        fontSize: 25,
+        fontFamily: "URW Gothic L, sans-serif",
+
+
+    },
+
+    menuContainerSelected: {
+        alignItems: "center",
+        backgroundColor: "#f8e499",
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        shadowColor: "#000",
+        shadowOffset: { width: 2, height: 2 },
+        shadowOpacity: 0.5,
+        shadowRadius: 4,
+        marginTop: 10,
+        position: "relative", // Ensure the button is positioned relative to this parent
+    },
+
+    menuContainer: {
+        alignItems: "center",
+        backgroundColor: "#1d4274",
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        marginTop: 10,
+        position: "relative", // Ensure the button is positioned relative to this parent
+    },
+
+    container: {
+        height: 250,
+        width: 250,
+        alignItems: "center",
+        backgroundColor: "#f8e499",
+        borderTopLeftRadius: 125,
+        borderTopRightRadius: 125,
+        borderBottomLeftRadius: 125,
+        borderBottomRightRadius: 125,
+        paddingTop: 40,
+        paddingBottom: 40,
+        shadowColor: "#000",
+        shadowOffset: { width: 2, height: 2 },
+        shadowOpacity: 0.5,
+        shadowRadius: 4,
+        marginBottom: 10,
+        position: "relative", // Ensure the button is positioned relative to this parent
+    },
+
+    containerText: {
+        color: "#1d4274",
+        textAlign: "center",
+        flex: 1,
+        fontSize: 30,
+        fontFamily: "URW Gothic L, sans-serif",
+    },
+
+    containerImage: {
+        color: "#1d4274",
+    },
+
+
+    button: {
+        height: 50,
+        width: 250,
+        backgroundColor: "#f8e499",
+        borderTopLeftRadius: 55,
+        borderTopRightRadius: 55,
+        borderBottomLeftRadius: 55,
+        borderBottomRightRadius: 55,
+        paddingTop: 40,
+        paddingBottom: 40,
+        shadowColor: "#000",
+        shadowOffset: { width: 2, height: 2 },
+        shadowOpacity: 0.5,
+        shadowRadius: 4,
+        marginBottom: 10,
+        position: "relative", // Ensure the button is positioned relative to this parent
+    }
+
+
+});
