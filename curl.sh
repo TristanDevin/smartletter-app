@@ -20,5 +20,5 @@ if [ "$1" == "emit" ]; then
 fi
 if [ "$1" == "get" ]; then
     echo "get data"
-    #curl -X POST http://localhost:3000/data -H 'Accept: application/json' -b "type=get"
+    curl -i "http://localhost:3000/messages" -H 'Accept: application/json'
 fi

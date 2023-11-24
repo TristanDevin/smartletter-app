@@ -1,21 +1,5 @@
 const express = require("express");
 var request = require('request');
-import { Pool, types } from "pg";
-import {
-  DATABASE_HOST,
-  DATABASE_NAME,
-  DATABASE_PASS,
-  DATABASE_PORT,
-  DATABASE_USER,
-} from "./env";
-
-const pool = new Pool({
-  user: DATABASE_USER,
-  host: DATABASE_HOST,
-  database: DATABASE_NAME,
-  password: DATABASE_PASS,
-  port: DATABASE_PORT,
-});
 
 var fs = require('fs');
 
@@ -69,11 +53,13 @@ app.route('/data').post(async(req, res) => {
 });
 
 app.route('/messages').get(async(req, res) => { 
-  try{
-    console.log(req.body);
-  } catch(err){
-    console.log(err);
-  }
+  console.log("get")
+  fs.readFile('test.json', (err, data) => {
+    if (err) console.log(err);
+    res.send(data)
+  });
+
+  
 });
 
 app.route('/').get((req, res) => {
