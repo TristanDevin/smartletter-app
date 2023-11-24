@@ -17,11 +17,24 @@ const pool = new Pool({
   port: DATABASE_PORT,
 });
 
+var fs = require('fs');
 
 const app = express();  
 app.use(express.json());
 const port = 3000;
 const address = `http://localhost:${port}/api`
+
+function hexToAscii(hexString) {
+  let asciiString = '';
+  
+  for (let i = 0; i < hexString.length; i += 2) {
+      let hex = hexString.substr(i, 2);
+      let decimal = parseInt(hex, 16);
+      asciiString += String.fromCharCode(decimal);
+  }
+  
+  return asciiString;
+}
 
 function hexToAscii(hexString) {
   let asciiString = '';
