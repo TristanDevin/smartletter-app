@@ -15,6 +15,14 @@ app.route('/data').post(async(req, res) => {
   }
 });
 
+app.route('/data').get(async(req, res) => { 
+  try{
+    console.log(req.body)
+  } catch(err){
+    console.log(err)
+  }
+});
+
 app.route('/').get((req, res) => {
   res.send("Hello World !!");
 });
