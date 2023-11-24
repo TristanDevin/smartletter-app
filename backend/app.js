@@ -1,6 +1,7 @@
 const express = require("express");
 var request = require('request');
 require("dotenv").config();
+
 var fs = require('fs');
 
 const getMessages = require('./db.js');
@@ -55,11 +56,13 @@ app.route('/data').post(async(req, res) => {
 });
 
 app.route('/messages').get(async(req, res) => { 
-  try{
-    console.log(req.body);
-  } catch(err){
-    console.log(err);
-  }
+  console.log("get")
+  fs.readFile('test.json', (err, data) => {
+    if (err) console.log(err);
+    res.send(data)
+  });
+
+  
 });
 
 app.route('/').get((req, res) => {
