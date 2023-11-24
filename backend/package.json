@@ -10,10 +10,12 @@
   "author": "Maxence Gueyffier",
   "license": "ISC",
   "dependencies": {
+    "@prisma/client": "^5.6.0",
     "express": "^4.18.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
-    "prisma": "^5.6.0"
+    "prisma": "^5.6.0",
+    "request": "^2.88.2"
   }
 }
