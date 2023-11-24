@@ -9,3 +9,12 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Message {
+  id           Int      @id @unique @default(autoincrement())
+  senderDevice String   @default("")
+  numColis     Int      @default(0)
+  numLetter    Int      @default(0)
+  receivedAt   DateTime @default(now())
+  retrieved    Boolean  @default(false)
+}
