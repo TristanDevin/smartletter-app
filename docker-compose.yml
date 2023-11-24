@@ -4,11 +4,6 @@ services:
   backend:
     build:
       context: ./backend
-    environment:
-      - POSTGRES_DB=mydatabase
-      - POSTGRES_USER=myuser
-      - POSTGRES_PASSWORD=mypassword  # Specify a strong password here
-    container_name: my-database
     ports:
       - "3000:3000"
     depends_on:
@@ -25,11 +20,9 @@ services:
     ports:
       - "5432:5432"  # Map the PostgreSQL port to the host machine
     environment:
-     - DATABASE_HOST="my-database"
-     - DATABASE_NAME="mydatabase"
-     - DATABASE_PASS="mypassword"
-     - DATABASE_PORT="5432"
-     - DATABASE_USER="myuser"
+      - POSTGRES_DB=mydatabase
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword  # Specify a strong password here
     networks:
       - mynetwork
 
