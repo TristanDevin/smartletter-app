@@ -11,8 +11,8 @@ const pool = new Pool({
   port: process.env.DATABASE_PORT,
 });
 
-function getMessages() {
-  return pool.query("SELECT * FROM message");
+async function getMessages() {
+  return pool.query('SELECT * FROM "Message"; ');
 }
 
-module.exports = { getMessages};
+module.exports = { getMessages };

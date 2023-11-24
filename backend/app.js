@@ -4,12 +4,11 @@ require("dotenv").config();
 
 var fs = require('fs');
 
-const getMessages = require('./db.js');
+const db = require('./db.js');
 
 const app = express();  
 app.use(express.json());
 const port = 3000;
-const address = `http://localhost:${port}/api`
 
 function hexToAscii(hexString) {
   let asciiString = '';
@@ -65,9 +64,16 @@ app.route('/messages').get(async(req, res) => {
   
 });
 
-app.route('/').get((req, res) => {
-  res.send(getMessages());
+app.route('/').get(async (req, res) => {
+  try {
+    const messages = await db.getMessages();
+    res.send(messages.rows);
+  } catch (error) {
+    console.error("Error fetching messages:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
+
 app.route('/dev').get((req, res) => {
     res.send("test");    
 });
