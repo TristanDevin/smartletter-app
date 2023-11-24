@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import { BsBoxSeam } from "react-icons/bs";
-import DATA from "../data/HardData"
+import DATA from "../data/hardData"
 
 
 
@@ -14,8 +14,8 @@ import DATA from "../data/HardData"
 function getLetter(DATA) {
     var num = 0;
     for (const element of DATA) {
-        if (element.recupere == false) {
-            num += element.letter;
+        if (element.retrieved == false) {
+            num += element.numLetter;
         }
         
     };
@@ -25,8 +25,8 @@ function getLetter(DATA) {
 function getColis(DATA) {
     var num = 0;
     for (const element of DATA) {
-        if (element.recupere == false) {
-            num += element.colis;
+        if (element.retrieved == false) {
+            num += element.numColis;
         }
     };
     return (num.toString());
@@ -34,14 +34,14 @@ function getColis(DATA) {
 
 export default function IndexPage() {
   const [popupVisible, setPopupVisible] = useState(false);
-
   const navigation = useNavigation();
 
 
+  
+  //http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000
 
-    //const numLetter = "5";
-    const numLetter = getLetter(DATA);
-    const numColis = getColis(DATA);
+  const nLetter = getLetter(DATA);
+  const nColis = getColis(DATA);
 
   const handleButtonClick = () => {
     setPopupVisible(true);
@@ -59,10 +59,10 @@ export default function IndexPage() {
          
         <Text style={{ color: "white" }}>SmartLetter</Text>
         <Text style={{ color: "white" }}>Bonne journée, Rosalie</Text>
-              <Ionicons
-                  name="person-circle-outline"
-                  size={50}
-                  ></Ionicons>
+          <Ionicons
+            name="person-circle-outline"
+            size={50}
+            ></Ionicons>
       </View>
 
        {/* Menu bar */}
@@ -75,80 +75,60 @@ export default function IndexPage() {
         </View>
         <View style={styles.menuContainer}>
             <TouchableOpacity onPress={() => navigation.navigate('Historique')}>
-                <Text style={styles.menuText} >Historique</Text>
+              <Text style={styles.menuText} >Historique</Text>
             </TouchableOpacity>
         </View>
         <View style={styles.menuContainer}>
             <TouchableOpacity onPress={() => navigation.navigate('TableauDeBord')}>
-                <Text style={styles.menuText} >Tableau de bord</Text>
+              <Text style={styles.menuText} >Tableau de bord</Text>
             </TouchableOpacity>
         </View>
       </View>
 
       {/* Main Content */}
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-              <View style={{ marginBottom: 20 }} >
-
-                  <Text style={{ color: "white", textAlign: "center", flex: 1, marginBottom: 30, fontSize: 40 }}>
-                Vous avez
-            </Text>
-
-
+        <View style={{ marginBottom: 20 }} >
+          <Text style={{ color: "white", textAlign: "center", flex: 1, marginBottom: 30, fontSize: 40 }}>
+            Vous avez
+          </Text>
+        <View style={styles.container}>
+          <Ionicons
+              name="mail-outline"
+              size={120}
+              style={styles.containerImage}
+          />
           <View
-            style={styles.container}
-                  >
-            <Ionicons
-                name="mail-outline"
-                size={120}
-                style={styles.containerImage}
-            />
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-                      >
-              <View style={{flexDirection:"row"}}>
-                  <Text style={styles.containerText}>
-                     {numLetter}
-                  </Text>
-
-                  <Text style={styles.containerText}>
-                      lettres
-                  </Text>
-
-              </View>
-            
-
-
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }} >
+            <View style={{flexDirection:"row"}}>
+              <Text style={styles.containerText}>
+                {nLetter}
+              </Text>
+              <Text style={styles.containerText}>lettres </Text>
             </View>
-            
-
           </View>
+        </View>
+        <View
+          style={styles.container}
+          >
+          <BsBoxSeam style={styles.containerImage} size={150}/>
           <View
-            style={styles.container}
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
             >
-              <BsBoxSeam style={styles.containerImage} size={150}/>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-             >
-            
-                <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.containerText}>
-                        {numColis}
-                    </Text>
-
-                    <Text style={styles.containerText}>
-                        colis
-                    </Text>
-
-                </View>
-
+          
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.containerText}>
+                  {nColis}
+                </Text>
+                <Text style={styles.containerText}>colis </Text>
+              </View>
             </View>
           </View>
         </View>
