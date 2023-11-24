@@ -10,7 +10,7 @@ services:
       - database
     networks:
       - mynetwork
-    command: ["bash", "-c", "npx prisma migrate dev && npm run start:dev"]
+    command: ["bash", "-c", "npx prisma migrate dev && npm run start"]
 
 
 
