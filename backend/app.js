@@ -1,6 +1,7 @@
 const express = require("express");
 var request = require('request');
 require("dotenv").config();
+const cors = require('cors');
 
 var fs = require('fs');
 
@@ -8,6 +9,7 @@ const db = require('./db.js');
 
 const app = express();  
 app.use(express.json());
+app.use(cors());
 const port = 3000;
 
 function hexToAscii(hexString) {
