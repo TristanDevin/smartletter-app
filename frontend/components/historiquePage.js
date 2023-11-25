@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo pack
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-import { BsBoxSeam } from "react-icons/bs";
+
 
 function getChecked(DATA) {
   var list = [];
@@ -18,7 +18,10 @@ function getChecked(DATA) {
 };
 
 
+
 const HistoriquePage = () => {
+  const [popupTrashVisible, setPopupTrashVisible] = useState(false);
+  const [popupUserVisible, setPopupUserVisible] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [jsonData, setJsonData] = useState(null);
@@ -47,11 +50,19 @@ const HistoriquePage = () => {
     fetchData();
   }, []); // Empty dependency array ensures that this effect runs once on mount
   
-  const handleButtonClick = () => {
-    setPopupVisible(true);
+  const handleTrashClick = () => {
+    setPopupTrashVisible(true);
     setTimeout(() => {
-      setPopupVisible(false);
-    }, 1500); // Close the popup after 1.5 seconds (1500 milliseconds)
+      setPopupTrashVisible(false);
+    }, 3000); // Close the popup after 1.5 seconds (1500 milliseconds)
+  };
+
+
+  const handleUserClick = () => {
+    setPopupUserVisible(true);
+    setTimeout(() => {
+      setPopupUserVisible(false);
+    }, 3000); // Close the popup after 1.5 seconds (1500 milliseconds)
   };
 
   const Item = ({ item, backgroundColor, textColor, letter, colis, date, time }) => {
@@ -61,7 +72,13 @@ const HistoriquePage = () => {
 
           <View style={[styles.item, { backgroundColor }]}>
             <Text style={[styles.itemText, { color: textColor, flex: 0.25, marginRight: 0, marginLeft: 20 }]}>{colis}</Text>
-            <BsBoxSeam style={ [styles.containerImage, {flex:0.7}]} size={50}/>
+            <Ionicons
+            color="#1d4274"
+            name='cube-outline'
+            size={50}
+            style={{ flex: 0.7 }}
+          ></Ionicons>
+            
             <Text style={[styles.itemText, { color: textColor, flex: 0.7 }]}>{time}</Text>
             <Text style={[styles.itemText, { color: textColor, flex: 1 }]}>{date}</Text>
 
@@ -81,7 +98,7 @@ const HistoriquePage = () => {
 
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleDeleteClick()} style={{ flex: 0.5 , marginRight:20}}>
+            <TouchableOpacity onPress={() => handleTrashClick()} style={{ flex: 0.5 , marginRight:20}}>
               <Ionicons
                 color="#1d4274"
                 name='trash-outline'
@@ -121,16 +138,17 @@ const HistoriquePage = () => {
 
             </View>
           </TouchableOpacity>
+          
+            <TouchableOpacity onPress={() => handleTrashClick()} style={{ flex: 0.5, marginRight: 20 }}>
+              <Ionicons
+                color="#1d4274"
+                name='trash-outline'
+                size={25}
+                
 
-          <TouchableOpacity onPress={() => handleDeleteClick()} style={{ flex: 0.5, marginRight: 20 }}>
-            <Ionicons
-              color="#1d4274"
-              name='trash-outline'
-              size={25}
-
-            ></Ionicons>
-          </TouchableOpacity >
-
+              ></Ionicons>
+            </TouchableOpacity >
+         
 
         </View>
       )
@@ -139,26 +157,31 @@ const HistoriquePage = () => {
     } else {
       return (
         <View style={[styles.item, { backgroundColor , flexDirection:"row"}]}>
-          <View style={{ flexDirection: 'column', flex: 0.4}}>
+          <View style={{ flexDirection: 'column', flex:1}}>
             <Text style={[styles.itemText, { color: textColor, marginRight: 0, marginLeft: 20 }]}>{colis}</Text>
             <Text style={[styles.itemText, { color: textColor, marginRight: 0, marginLeft: 20 }]}>{letter}</Text>
           </View>
 
-          <View style={{ flexDirection: 'column', flex: 0.7 }}>
-            <BsBoxSeam style={ {color:"#1d4274"}} size={50}/>
+          <View style={{ flexDirection: 'column', flex: 1 }}>
+            <Ionicons
+              color="#1d4274"
+              name='cube-outline'
+              size={40}
+              style={{ flex: 0.7 }}
+            ></Ionicons>
             <Ionicons
                 color="#1d4274"
                 name="mail-outline"
-                size={50}
+                size={40}
               
             ></Ionicons>
           </View>
   
-          <Text style={[styles.itemText, { color: textColor, flex:0.4}]}>{time}</Text>
-          <Text style={[styles.itemText, { color: textColor, flex: 1 }]}>{date}</Text>
+          <Text style={[styles.itemText, { color: textColor, flex:1}]}>{time}</Text>
+          <Text style={[styles.itemText, { color: textColor, flex: 2 }]}>{date}</Text>
 
           <TouchableOpacity onPress={() => toggleCheckbox(item)}>
-            <View style={{ flex: 0.5 }}>
+            <View style={{ flex: 1 }}>
               <View
                 style={{
                   width: 20,
@@ -172,13 +195,17 @@ const HistoriquePage = () => {
               />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleDeleteClick()} style={{ flex: 0.5, marginRight: 20 }}>
-            <Ionicons
-              color="#1d4274"
-              name='trash-outline'
-              size={25}
-            ></Ionicons>
-          </TouchableOpacity >
+          
+            <TouchableOpacity onPress={() => handleTrashClick()} style={{ flex: 1, marginRight: 20, marginTop:40 }}>
+              <Ionicons
+                color="#1d4274"
+                name='trash-outline'
+                size={25}
+                
+
+              ></Ionicons>
+            </TouchableOpacity >
+          
         </View>
       )
     }
@@ -247,11 +274,13 @@ const HistoriquePage = () => {
       />
          
 
+         <TouchableOpacity onPress= {handleUserClick}>
           <Ionicons
             name="person-circle-outline"
             size={50}
             color = "#1d4274"
-            ></Ionicons>
+          ></Ionicons>
+        </TouchableOpacity>
       </View>
 
       {/* Menu bar */}
@@ -268,11 +297,12 @@ const HistoriquePage = () => {
         <View style={styles.menuContainerSelected}>
           <Text style={styles.menuTextSelected} >Historique</Text>
         </View>
+        {/*
         <View style={styles.menuContainer}>
           <TouchableOpacity onPress={() => navigation.navigate('TableauDeBord')}>
             <Text style={styles.menuText} >Tableau de bord</Text>
           </TouchableOpacity>
-        </View>
+        </View>*/}
       </View>
 
       {/* Main Content */}
@@ -301,19 +331,14 @@ const HistoriquePage = () => {
       <View
         style={{
           height: 50,
-          backgroundColor: "#f8e499",
+          backgroundColor: "#1d4274",
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
           paddingHorizontal: 20,
         }}
       > 
-      <TouchableOpacity onPress={handleButtonClick}>
-          <Image
-            source={require("../assets/icons/gear.png")}
-            style={{ width: 25, height: 25 }}
-          />
-        </TouchableOpacity>
+      
       </View>
       
     </View>
@@ -323,7 +348,8 @@ const HistoriquePage = () => {
 
 const styles = StyleSheet.create({
   topbar: {
-      height: 50,
+      paddingTop:50,
+      height: 100,
       flexDirection: "row",
       backgroundColor: "#f8e499",
       justifyContent: "space-between",
@@ -345,61 +371,67 @@ const styles = StyleSheet.create({
   },
 
   menuText: {
-      color: "white",
-      textAlign: "center",
-      flex: 1,
-      fontSize: 25,
-      fontFamily: "URW Gothic L, sans-serif",
+    color: "white",
+    textAlign: "center",
+    alignSelf:"center",
+    flex: 1,
+    fontSize: 25,
 
 
-  },
 
-  menuTextSelected: {
-      color: "#1d4274",
-      textAlign: "center",
-      flex: 1,
-      fontSize: 25,
-      fontFamily: "URW Gothic L, sans-serif",
+},
+
+menuTextSelected: {
+    alignSelf:"center",
+    color: "#1d4274",
+    textAlign: "center",
+    flex: 1,
+    fontSize: 25,
 
 
-  },
 
-  menuContainerSelected: {
-      alignItems: "center",
-      backgroundColor: "#f8e499",
-      borderTopLeftRadius: 30,
-      borderTopRightRadius: 30,
-      borderBottomLeftRadius: 30,
-      borderBottomRightRadius: 30,
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      shadowColor: "#000",
-      shadowOffset: { width: 2, height: 2 },
-      shadowOpacity: 0.5,
-      shadowRadius: 4,
-      marginTop: 10,
-      position: "relative", // Ensure the button is positioned relative to this parent
-  },
+},
 
-  menuContainer: {
-      alignItems: "center",
-      backgroundColor: "#1d4274",
-      borderTopLeftRadius: 30,
-      borderTopRightRadius: 30,
-      borderBottomLeftRadius: 30,
-      borderBottomRightRadius: 30,
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      marginTop: 10,
-      position: "relative", // Ensure the button is positioned relative to this parent
-  },
+menuContainerSelected: {
+    alignItems: "center",
+    justifyContent:"center",
+    backgroundColor: "#f8e499",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    paddingHorizontal: 20,
+    paddingTop:8,
+    
+    shadowColor: "#000",
+    shadowOffset: { width: 2, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 4,
+    marginTop: 10,
+    position: "relative", // Ensure the button is positioned relative to this parent
+},
+
+
+menuContainer: {
+    alignItems: "center",
+    justifyContent:"center",
+    backgroundColor: "#1d4274",
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    borderBottomLeftRadius: 30,
+    borderBottomRightRadius: 30,
+    paddingHorizontal: 20,
+    paddingTop: 8,
+    marginTop: 10,
+    position: "relative", // Ensure the button is positioned relative to this parent
+},
 
   container: {
       alignSelf: "stretch",
       alignItems: "center",
       paddingTop: 40,
       paddingBottom: 40,
-      
+      marginTop:20,
       marginBottom: 10,
       position: "relative", // Ensure the button is positioned relative to this parent
   },
@@ -407,7 +439,8 @@ const styles = StyleSheet.create({
   containerBar: {
       flexDirection: "row",
       marginLeft: 50,
-      marginTop:70,
+      marginTop:50,
+  
       justifyContent: "center",
 
       position: "relative", // Ensure the button is positioned relative to this parent
@@ -417,13 +450,13 @@ const styles = StyleSheet.create({
       color: "white",
       flex: 1,
       fontSize: 20,
-      fontFamily: "URW Gothic L, sans-serif",
+
       position: "relative",
   },
 
   item: {
       justifyContent: "space-around",
-      width: 500,
+      width: 350,
       alignSelf: "stretch",
       flexDirection: "row",
       backgroundColor: "#f8e499",
@@ -438,7 +471,7 @@ const styles = StyleSheet.create({
   },
 
   itemText: {
-      fontSize: 20,
+      fontSize: 15,
       color: "black",
       position: "relative", // Ensure the button is positioned relative to this parent
       marginHorizontal: 20,
