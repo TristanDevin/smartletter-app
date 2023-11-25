@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import { View, Text, Image, StyleSheet, SafeAreaView, FlatList} from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo package
@@ -24,6 +24,7 @@ const HistoriquePage = () => {
 
   const navigation = useNavigation();
 
+  
  
 
   const Item = ({ item, backgroundColor, textColor, letter, colis, date, time }) => {

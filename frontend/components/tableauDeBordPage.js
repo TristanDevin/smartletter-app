@@ -57,59 +57,7 @@ const TableauDeBordPage = () => {
             </View>
 
             {/* Main Content */}
-            <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-                <View style={{ marginBottom: 20 }} >
-
-                    <Text style={{ color: "white", textAlign: "center", flex: 1, marginBottom: 30, fontSize: 40 }}>
-                        Vous avez
-                    </Text>
-
-
-                    <View
-                        style={styles.container}
-                    >
-                        <Ionicons
-                            name="mail-outline"
-                            size={150}
-                            style={styles.containerImage}
-                        />
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <Text style={styles.containerText}>
-                                3 lettres
-                            </Text>
-
-
-
-                        </View>
-
-
-                    </View>
-                    <View
-                        style={styles.container}
-                    >
-                        <BsBoxSeam style={styles.containerImage} size={150} />
-                        <View
-                            style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "center",
-                            }}
-                        >
-
-                            <Text style={styles.containerText}>
-                                0 colis
-                            </Text>
-
-                        </View>
-                    </View>
-                </View>
-            </View>
+            
 
             {/* Footer Bar */}
             <View

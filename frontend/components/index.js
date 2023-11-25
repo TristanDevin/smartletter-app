@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo package
@@ -7,7 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import { BsBoxSeam } from "react-icons/bs";
 import DATA from "../data/hardData"
-
+import axios from 'axios'; // If you're using axios
 
 
 
@@ -35,7 +35,7 @@ function getColis(DATA) {
 export default function IndexPage() {
   const [popupVisible, setPopupVisible] = useState(false);
   const navigation = useNavigation();
-
+  const [jsonData, setJsonData] = useState(null);
 
   
   //http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000
@@ -50,18 +50,52 @@ export default function IndexPage() {
     }, 1500); // Close the popup after 1.5 seconds (1500 milliseconds)
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Using fetch API
+        //const response = await fetch('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000');
+        //const data = await response.json();
+        //setJsonData(data);
+
+        //API pour test le get : 
+        //https://mocki.io/v1/be3cb19b-bd49-4a82-b19b-44b859e19d5d
+
+        // // If using axios
+        const response = await axios.get('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000');
+        setJsonData(response);
+      } catch (error) {
+        window.alert(error);
+        setJsonData(error);
+        console.error('Error fetching data:', error);
+      }
+
+    };
+
+
+
+
+    fetchData();
+  }, []); // Empty dependency array ensures that this effect runs once on mount
+
+  
+
   return (
     <View style={{ flex: 1, backgroundColor: "#1d4274" }}>
       {/* Top Bar */}
       <View
         style={styles.topbar}
       >
+        <Image
+        style={styles.logo}
+        source={require('../assets/logo.png')}
+      />
          
-        <Text style={{ color: "white" }}>SmartLetter</Text>
-        <Text style={{ color: "white" }}>Bonne journée, Rosalie</Text>
+
           <Ionicons
             name="person-circle-outline"
             size={50}
+            color = "#1d4274"
             ></Ionicons>
       </View>
 
@@ -91,6 +125,9 @@ export default function IndexPage() {
           <Text style={{ color: "white", textAlign: "center", flex: 1, marginBottom: 30, fontSize: 40 }}>
             Vous avez
           </Text>
+          <View>
+            <Text>Data: {JSON.stringify(jsonData)}</Text>
+          </View>
         <View style={styles.container}>
           <Ionicons
               name="mail-outline"
@@ -291,6 +328,12 @@ const styles = StyleSheet.create({
         color: "#1d4274",
     },
 
+
+      logo: {
+        width: 120,
+        height: 50,
+      },
+  
 
     button: {
         height: 50,
