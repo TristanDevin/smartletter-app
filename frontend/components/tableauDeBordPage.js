@@ -59,24 +59,7 @@ const TableauDeBordPage = () => {
             {/* Main Content */}
             
 
-            {/* Footer Bar */}
-            <View
-                style={{
-                    height: 50,
-                    backgroundColor: "grey",
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    paddingHorizontal: 20,
-                }}
-            >
-                <TouchableOpacity onPress={handleButtonClick}>
-                    <Image
-                        source={require("../assets/icons/gear.png")}
-                        style={{ width: 25, height: 25 }}
-                    />
-                </TouchableOpacity>
-            </View>
+           
             {/* Popup */}
             {popupVisible && (
                 <View

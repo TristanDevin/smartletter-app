@@ -6,42 +6,19 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import { BsBoxSeam } from "react-icons/bs";
-import DATA from "../data/hardData"
-import axios from 'axios'; // If you're using axios
 
-
-
-function getLetter(DATA) {
-    var num = 0;
-    for (const element of DATA) {
-        if (element.retrieved == false) {
-            num += element.numLetter;
-        }
-        
-    };
-    return (num.toString());
-};
-
-function getColis(DATA) {
-    var num = 0;
-    for (const element of DATA) {
-        if (element.retrieved == false) {
-            num += element.numColis;
-        }
-    };
-    return (num.toString());
-};
 
 export default function IndexPage() {
   const [popupVisible, setPopupVisible] = useState(false);
   const navigation = useNavigation();
   const [jsonData, setJsonData] = useState(null);
+  const [totalLetter, setTotalLetter] = useState(0);
+  const [totalColis, setTotalColis] = useState(0);
 
   
   //http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000
 
-  const nLetter = getLetter(DATA);
-  const nColis = getColis(DATA);
+  
 
   const handleButtonClick = () => {
     setPopupVisible(true);
@@ -54,16 +31,21 @@ export default function IndexPage() {
     const fetchData = async () => {
       try {
         // Using fetch API
-        //const response = await fetch('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000');
-        //const data = await response.json();
-        //setJsonData(data);
-
+        const response = await fetch('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000');
+        const data = await response.json();
+        setJsonData(data);
+        const sumL = data.reduce((acc, item) => acc + item.numLetter, 0);
+        setTotalLetter(sumL);
+        const sumC = data.reduce((acc, item) => acc + item.numColis, 0);
+        setTotalColis(sumC);
         //API pour test le get : 
         //https://mocki.io/v1/be3cb19b-bd49-4a82-b19b-44b859e19d5d
+        //notre api : 
+        //'http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000'
 
         // // If using axios
-        const response = await axios.get('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000');
-        setJsonData(response);
+        //const response = await axios.get('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000');
+        //setJsonData(response.data);
       } catch (error) {
         window.alert(error);
         setJsonData(error);
@@ -71,14 +53,13 @@ export default function IndexPage() {
       }
 
     };
-
+    
 
 
 
     fetchData();
   }, []); // Empty dependency array ensures that this effect runs once on mount
 
-  
 
   return (
     <View style={{ flex: 1, backgroundColor: "#1d4274" }}>
@@ -87,16 +68,19 @@ export default function IndexPage() {
         style={styles.topbar}
       >
         <Image
-        style={styles.logo}
-        source={require('../assets/logo.png')}
-      />
-         
-
+          style={styles.logo}
+          source={require('../assets/logo.png')}
+          />
+        <TouchableOpacity onPress= {handleButtonClick}>
           <Ionicons
             name="person-circle-outline"
             size={50}
             color = "#1d4274"
-            ></Ionicons>
+          ></Ionicons>
+        </TouchableOpacity>
+         
+
+          
       </View>
 
        {/* Menu bar */}
@@ -122,52 +106,63 @@ export default function IndexPage() {
       {/* Main Content */}
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <View style={{ marginBottom: 20 }} >
-          <Text style={{ color: "white", textAlign: "center", flex: 1, marginBottom: 30, fontSize: 40 }}>
+          <Text style={{ color: "white", textAlign: "center", flex: 1, marginTop: 20, marginBottom: 20,fontSize: 40 }}>
             Vous avez
           </Text>
-          <View>
-            <Text>Data: {JSON.stringify(jsonData)}</Text>
-          </View>
-        <View style={styles.container}>
-          <Ionicons
-              name="mail-outline"
-              size={120}
-              style={styles.containerImage}
-          />
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }} >
-            <View style={{flexDirection:"row"}}>
-              <Text style={styles.containerText}>
-                {nLetter}
-              </Text>
-              <Text style={styles.containerText}>lettres </Text>
-            </View>
-          </View>
-        </View>
-        <View
-          style={styles.container}
-          >
-          <BsBoxSeam style={styles.containerImage} size={150}/>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-            >
-          
-              <View style={{ flexDirection: "row" }}>
-                <Text style={styles.containerText}>
-                  {nColis}
-                </Text>
-                <Text style={styles.containerText}>colis </Text>
+          <View style={styles.container}>
+            <Ionicons
+                name="mail-outline"
+                size={120}
+                style={styles.containerImage}
+            />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }} >
+              <View style={{flexDirection:"row"}}>
+                <Text style={styles.containerText}> {totalLetter} lettres </Text>
+
               </View>
             </View>
           </View>
+          <View
+            style={styles.container}
+            >
+            <BsBoxSeam style={styles.containerImage} size={150}/>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+              >
+            
+              <View style={{ flexDirection: "row" }}>
+                <Text style={styles.containerText}> {totalColis} colis </Text>
+              </View>
+            </View>
+          </View>
+          <TouchableOpacity onPress= {handleButtonClick}>
+            <View
+              style={styles.button}
+              >
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                >
+              
+                <View style={{ flexDirection: "row" }}>
+                  <Text style={styles.buttonText}>
+                    Récupérer mon courrier
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </TouchableOpacity>        
         </View>
       </View>
 
@@ -175,7 +170,7 @@ export default function IndexPage() {
       <View
         style={{
           height: 50,
-          backgroundColor: "grey",
+          backgroundColor: "#f8e499",
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
@@ -301,6 +296,7 @@ const styles = StyleSheet.create({
         height: 250,
         width: 250,
         alignItems: "center",
+        alignSelf: "center",
         backgroundColor: "#f8e499",
         borderTopLeftRadius: 125,
         borderTopRightRadius: 125,
@@ -333,18 +329,24 @@ const styles = StyleSheet.create({
         width: 120,
         height: 50,
       },
-  
+      
+    buttonText: {
+      color: "#1d4274",
+      textAlign: "center",
+      flex: 1,
+      fontSize: 30,
+      fontFamily: "URW Gothic L, sans-serif",
+    },
 
     button: {
-        height: 50,
-        width: 250,
+        height: 100,
+        width: 300,
         backgroundColor: "#f8e499",
-        borderTopLeftRadius: 55,
-        borderTopRightRadius: 55,
-        borderBottomLeftRadius: 55,
-        borderBottomRightRadius: 55,
-        paddingTop: 40,
-        paddingBottom: 40,
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30,
+        borderBottomLeftRadius: 30,
+        borderBottomRightRadius: 30,
+        justifyContent:"center",
         shadowColor: "#000",
         shadowOffset: { width: 2, height: 2 },
         shadowOpacity: 0.5,
