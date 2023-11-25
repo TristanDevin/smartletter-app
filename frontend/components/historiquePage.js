@@ -5,9 +5,9 @@ import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo pack
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-import DATA from "../data/hardData"
+import { BsBoxSeam } from "react-icons/bs";
 
-function getChecked() {
+function getChecked(DATA) {
   var list = [];
   for (const element of DATA) {
     if (element.recupere == true) {
@@ -20,12 +20,39 @@ function getChecked() {
 
 const HistoriquePage = () => {
   const [popupVisible, setPopupVisible] = useState(false);
-  const [selectedItems, setSelectedItems] = useState(getChecked());
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [jsonData, setJsonData] = useState(null);
 
   const navigation = useNavigation();
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Using fetch API
+        const response = await fetch('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000');
+        const data = await response.json();
+        setJsonData(data);
+
+      } catch (error) {
+        window.alert(error);
+        setJsonData(error);
+        console.error('Error fetching data:', error);
+      }
+
+    };
+    
+
+
+
+    fetchData();
+  }, []); // Empty dependency array ensures that this effect runs once on mount
   
- 
+  const handleButtonClick = () => {
+    setPopupVisible(true);
+    setTimeout(() => {
+      setPopupVisible(false);
+    }, 1500); // Close the popup after 1.5 seconds (1500 milliseconds)
+  };
 
   const Item = ({ item, backgroundColor, textColor, letter, colis, date, time }) => {
     if (letter == '0') {
@@ -34,12 +61,7 @@ const HistoriquePage = () => {
 
           <View style={[styles.item, { backgroundColor }]}>
             <Text style={[styles.itemText, { color: textColor, flex: 0.25, marginRight: 0, marginLeft: 20 }]}>{colis}</Text>
-            <Ionicons
-              color="#1d4274"
-              name='cube-outline'
-              size={50}
-              style={{ flex: 0.7 }}
-            ></Ionicons>
+            <BsBoxSeam style={ [styles.containerImage, {flex:0.7}]} size={50}/>
             <Text style={[styles.itemText, { color: textColor, flex: 0.7 }]}>{time}</Text>
             <Text style={[styles.itemText, { color: textColor, flex: 1 }]}>{date}</Text>
 
@@ -123,12 +145,7 @@ const HistoriquePage = () => {
           </View>
 
           <View style={{ flexDirection: 'column', flex: 0.7 }}>
-            <Ionicons
-                color="#1d4274"
-                name="cube-outline"
-                size={50}
-            
-            ></Ionicons>
+            <BsBoxSeam style={ {color:"#1d4274"}} size={50}/>
             <Ionicons
                 color="#1d4274"
                 name="mail-outline"
@@ -224,13 +241,17 @@ const HistoriquePage = () => {
       <View
         style={styles.topbar}
       >
+        <Image
+        style={styles.logo}
+        source={require('../assets/logo.png')}
+      />
+         
 
-        <Text style={{ color: "white" }}>SmartLetter</Text>
-        <Text style={{ color: "white" }}>Bonne journ�e, Rosalie</Text>
-        <Ionicons
+          <Ionicons
             name="person-circle-outline"
             size={50}
-        ></Ionicons>
+            color = "#1d4274"
+            ></Ionicons>
       </View>
 
       {/* Menu bar */}
@@ -266,7 +287,7 @@ const HistoriquePage = () => {
         <View style={{ marginBottom: 20 }} >
           <SafeAreaView style={styles.container}>
             <FlatList
-              data={DATA}
+              data={jsonData}
               renderItem={renderItem}
                 
   
@@ -280,13 +301,20 @@ const HistoriquePage = () => {
       <View
         style={{
           height: 50,
-          backgroundColor: "grey",
+          backgroundColor: "#f8e499",
           flexDirection: "row",
           justifyContent: "space-between",
           alignItems: "center",
           paddingHorizontal: 20,
         }}
-      > </View>
+      > 
+      <TouchableOpacity onPress={handleButtonClick}>
+          <Image
+            source={require("../assets/icons/gear.png")}
+            style={{ width: 25, height: 25 }}
+          />
+        </TouchableOpacity>
+      </View>
       
     </View>
   );
@@ -417,6 +445,10 @@ const styles = StyleSheet.create({
       marginVertical: 20,
   },
 
+  logo: {
+    width: 120,
+    height: 50,
+  },
 
   button: {
       height: 50,
