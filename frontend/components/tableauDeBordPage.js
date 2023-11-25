@@ -5,7 +5,7 @@ import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo pack
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-import { BsBoxSeam } from "react-icons/bs";
+
 
 
 const TableauDeBordPage = () => {
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         flex: 1,
         fontSize: 25,
-        fontFamily: "URW Gothic L, sans-serif",
+  
 
 
     },
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         flex: 1,
         fontSize: 25,
-        fontFamily: "URW Gothic L, sans-serif",
+    
 
 
     },
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         flex: 1,
         fontSize: 30,
-        fontFamily: "URW Gothic L, sans-serif",
+
     },
 
     containerImage: {

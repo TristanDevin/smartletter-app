@@ -5,11 +5,12 @@ import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo pack
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-import { BsBoxSeam } from "react-icons/bs";
+
 
 
 export default function IndexPage() {
-  const [popupVisible, setPopupVisible] = useState(false);
+  const [popupButtonVisible, setPopupButtonVisible] = useState(false);
+  const [popupUserVisible, setPopupUserVisible] = useState(false);
   const navigation = useNavigation();
   const [jsonData, setJsonData] = useState(null);
   const [totalLetter, setTotalLetter] = useState(0);
@@ -21,10 +22,18 @@ export default function IndexPage() {
   
 
   const handleButtonClick = () => {
-    setPopupVisible(true);
+    setPopupButtonVisible(true);
     setTimeout(() => {
-      setPopupVisible(false);
-    }, 1500); // Close the popup after 1.5 seconds (1500 milliseconds)
+      setPopupButtonVisible(false);
+    }, 3000); // Close the popup after 1.5 seconds (1500 milliseconds)
+  };
+
+
+  const handleUserClick = () => {
+    setPopupUserVisible(true);
+    setTimeout(() => {
+      setPopupUserVisible(false);
+    }, 3000); // Close the popup after 1.5 seconds (1500 milliseconds)
   };
 
   useEffect(() => {
@@ -71,7 +80,7 @@ export default function IndexPage() {
           style={styles.logo}
           source={require('../assets/logo.png')}
           />
-        <TouchableOpacity onPress= {handleButtonClick}>
+        <TouchableOpacity onPress= {handleUserClick}>
           <Ionicons
             name="person-circle-outline"
             size={50}
@@ -93,14 +102,16 @@ export default function IndexPage() {
         </View>
         <View style={styles.menuContainer}>
             <TouchableOpacity onPress={() => navigation.navigate('Historique')}>
-              <Text style={styles.menuText} >Historique</Text>
+              <Text style={styles.menuText} > Historique </Text>
             </TouchableOpacity>
         </View>
+
+        {/*
         <View style={styles.menuContainer}>
             <TouchableOpacity onPress={() => navigation.navigate('TableauDeBord')}>
               <Text style={styles.menuText} >Tableau de bord</Text>
             </TouchableOpacity>
-        </View>
+        </View>*/}
       </View>
 
       {/* Main Content */}
@@ -130,7 +141,12 @@ export default function IndexPage() {
           <View
             style={styles.container}
             >
-            <BsBoxSeam style={styles.containerImage} size={150}/>
+            <Ionicons
+              color="#1d4274"
+              name='cube-outline'
+              size={120}
+              
+          ></Ionicons>
             <View
               style={{
                 flexDirection: "row",
@@ -167,25 +183,9 @@ export default function IndexPage() {
       </View>
 
       {/* Footer Bar */}
-      <View
-        style={{
-          height: 50,
-          backgroundColor: "#f8e499",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingHorizontal: 20,
-        }}
-      >
-        <TouchableOpacity onPress={handleButtonClick}>
-          <Image
-            source={require("../assets/icons/gear.png")}
-            style={{ width: 25, height: 25 }}
-          />
-        </TouchableOpacity>
-      </View>
+      
       {/* Popup */}
-      {popupVisible && (
+      {popupButtonVisible && (
         <View
           style={{
             flex: 1,
@@ -210,7 +210,39 @@ export default function IndexPage() {
               shadowRadius: 4,
             }}
           >
-            <Text>Clicked!</Text>
+            <Text>TODO </Text>
+            <Text>Ce bouton permet de cocher tous les messages </Text>
+          </View>
+        </View>
+      )}
+      {/* Popup */}
+      {popupUserVisible && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "white",
+              padding: 20,
+              borderRadius: 8,
+              shadowColor: "#000",
+              shadowOffset: { width: 2, height: 2 },
+              shadowOpacity: 0.5,
+              shadowRadius: 4,
+            }}
+          >
+            <Text>TODO </Text>
+            <Text>Ce bouton ouvre des paramètres  </Text>
           </View>
         </View>
       )}
@@ -221,7 +253,8 @@ export default function IndexPage() {
 
 const styles = StyleSheet.create({
     topbar: {
-        height: 50,
+        height: 100,
+        paddingTop:50,
         flexDirection :"row",
         backgroundColor: "#f8e499",
         justifyContent: "space-between",
@@ -245,32 +278,36 @@ const styles = StyleSheet.create({
     menuText: {
         color: "white",
         textAlign: "center",
+        alignSelf:"center",
         flex: 1,
         fontSize: 25,
-        fontFamily: "URW Gothic L, sans-serif",
+
 
 
     },
 
     menuTextSelected: {
+        alignSelf:"center",
         color: "#1d4274",
         textAlign: "center",
         flex: 1,
         fontSize: 25,
-        fontFamily: "URW Gothic L, sans-serif",
+
 
 
     },
 
     menuContainerSelected: {
         alignItems: "center",
+        justifyContent:"center",
         backgroundColor: "#f8e499",
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
         paddingHorizontal: 20,
-        paddingVertical: 10,
+        paddingTop:8,
+        
         shadowColor: "#000",
         shadowOffset: { width: 2, height: 2 },
         shadowOpacity: 0.5,
@@ -279,22 +316,25 @@ const styles = StyleSheet.create({
         position: "relative", // Ensure the button is positioned relative to this parent
     },
 
+
     menuContainer: {
         alignItems: "center",
+        justifyContent:"center",
         backgroundColor: "#1d4274",
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
         paddingHorizontal: 20,
-        paddingVertical: 10,
+        paddingTop: 8,
         marginTop: 10,
         position: "relative", // Ensure the button is positioned relative to this parent
     },
 
+
     container: {
-        height: 250,
-        width: 250,
+        height: 220,
+        width: 220,
         alignItems: "center",
         alignSelf: "center",
         backgroundColor: "#f8e499",
@@ -317,7 +357,7 @@ const styles = StyleSheet.create({
         textAlign: "center",
         flex: 1,
         fontSize: 30,
-        fontFamily: "URW Gothic L, sans-serif",
+
     },
 
     containerImage: {
@@ -335,7 +375,7 @@ const styles = StyleSheet.create({
       textAlign: "center",
       flex: 1,
       fontSize: 30,
-      fontFamily: "URW Gothic L, sans-serif",
+
     },
 
     button: {
@@ -352,6 +392,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 4,
         marginBottom: 10,
+        marginTop: 20,
         position: "relative", // Ensure the button is positioned relative to this parent
     }
 
