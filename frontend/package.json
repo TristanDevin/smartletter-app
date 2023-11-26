@@ -20,6 +20,7 @@
     "brew": "^0.0.8",
     "docker-compose": "^0.24.3",
     "expo": "~49.0.15",
+    "expo-font": "~11.4.0",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
     "glob": "^7.2.0",

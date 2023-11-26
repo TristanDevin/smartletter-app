@@ -7,7 +7,6 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 
 
-
 export default function IndexPage() {
   const [popupButtonVisible, setPopupButtonVisible] = useState(false);
   const [popupUserVisible, setPopupUserVisible] = useState(false);
@@ -19,7 +18,11 @@ export default function IndexPage() {
   
   //http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000
 
-  
+
+
+
+
+
 
   const handleButtonClick = () => {
     setPopupButtonVisible(true);
@@ -117,7 +120,7 @@ export default function IndexPage() {
       {/* Main Content */}
       <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
         <View style={{ marginBottom: 20 }} >
-          <Text style={{ color: "white", textAlign: "center", flex: 1, marginTop: 20, marginBottom: 20,fontSize: 40 }}>
+          <Text style={{ color: "white", textAlign: "center", flex: 1, marginTop: Platform.OS === 'ios'? 30 : 20, marginBottom: 10,fontSize: 40 , fontFamily : Platform.OS === 'ios' ? "Futura" : "sans-serif-condensed",}}>
             Vous avez
           </Text>
           <View style={styles.container}>
@@ -145,6 +148,7 @@ export default function IndexPage() {
               color="#1d4274"
               name='cube-outline'
               size={120}
+              style={{marginLeft:10}}
               
           ></Ionicons>
             <View
@@ -276,6 +280,7 @@ const styles = StyleSheet.create({
     },
 
     menuText: {
+        fontFamily : Platform.OS === 'ios' ? "Futura" : "sans-serif-condensed",
         color: "white",
         textAlign: "center",
         alignSelf:"center",
@@ -287,6 +292,7 @@ const styles = StyleSheet.create({
     },
 
     menuTextSelected: {
+        fontFamily : Platform.OS === 'ios' ? "Futura" : "sans-serif-condensed",
         alignSelf:"center",
         color: "#1d4274",
         textAlign: "center",
@@ -298,43 +304,46 @@ const styles = StyleSheet.create({
     },
 
     menuContainerSelected: {
-        alignItems: "center",
-        justifyContent:"center",
-        backgroundColor: "#f8e499",
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
-        paddingHorizontal: 20,
-        paddingTop:8,
-        
-        shadowColor: "#000",
-        shadowOffset: { width: 2, height: 2 },
-        shadowOpacity: 0.5,
-        shadowRadius: 4,
-        marginTop: 10,
-        position: "relative", // Ensure the button is positioned relative to this parent
+      height: 50,
+      alignItems: "center",
+      justifyContent:"center",
+      backgroundColor: "#f8e499",
+      borderTopLeftRadius: 20,
+      borderTopRightRadius: 20,
+      borderBottomLeftRadius: 20,
+      borderBottomRightRadius: 20,
+      paddingHorizontal: 20,
+      paddingTop: Platform.OS === 'ios' ? 10 : 5 ,
+      
+      shadowColor: "#000",
+      shadowOffset: { width: 2, height: 2 },
+      shadowOpacity: 0.5,
+      shadowRadius: 4,
+      marginTop: 10,
+      position: "relative", // Ensure the button is positioned relative to this parent
     },
-
-
+    
+    
     menuContainer: {
-        alignItems: "center",
-        justifyContent:"center",
-        backgroundColor: "#1d4274",
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
-        paddingHorizontal: 20,
-        paddingTop: 8,
-        marginTop: 10,
-        position: "relative", // Ensure the button is positioned relative to this parent
+      height: 50,
+      alignItems: "center",
+      justifyContent:"center",
+      backgroundColor: "#1d4274",
+      borderTopLeftRadius: 30,
+      borderTopRightRadius: 30,
+      borderBottomLeftRadius: 30,
+      borderBottomRightRadius: 30,
+      paddingHorizontal: 20,
+      paddingTop: Platform.OS === 'ios' ? 10 : 5 ,
+      marginTop: 10,
+      position: "relative", // Ensure the button is positioned relative to this parent
     },
 
 
     container: {
-        height: 220,
-        width: 220,
+        width: Platform.OS === 'ios' ? 220 : 210,
+        height: Platform.OS === 'ios' ? 220 : 210,
+        justifyContent:"center",
         alignItems: "center",
         alignSelf: "center",
         backgroundColor: "#f8e499",
@@ -353,10 +362,12 @@ const styles = StyleSheet.create({
     },
 
     containerText: {
+        fontFamily : Platform.OS === 'ios' ? "Futura" : "sans-serif-condensed",
+        fontSize: Platform.OS === 'ios' ? 30 : 22,
         color: "#1d4274",
         textAlign: "center",
         flex: 1,
-        fontSize: 30,
+       
 
     },
 
@@ -371,16 +382,18 @@ const styles = StyleSheet.create({
       },
       
     buttonText: {
+      fontFamily : Platform.OS === 'ios' ? "Futura" : "sans-serif-condensed",
       color: "#1d4274",
       textAlign: "center",
       flex: 1,
-      fontSize: 30,
+      fontSize: Platform.OS === 'ios' ? 30 : 25,
 
     },
 
     button: {
-        height: 100,
-        width: 300,
+      
+        height: 80,
+        width: Platform.OS === 'ios' ? 300 : 350,
         backgroundColor: "#f8e499",
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30,
