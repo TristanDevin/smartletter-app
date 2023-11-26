@@ -156,18 +156,18 @@ const HistoriquePage = () => {
 
     } else {
       return (
-        <View style={[styles.item, { backgroundColor , flexDirection:"row"}]}>
-          <View style={{ flexDirection: 'column', flex:1}}>
-            <Text style={[styles.itemText, { color: textColor, marginRight: 0, marginLeft: 20 }]}>{colis}</Text>
-            <Text style={[styles.itemText, { color: textColor, marginRight: 0, marginLeft: 20 }]}>{letter}</Text>
+        <View style={[styles.item, { backgroundColor , flexDirection:"row", height : 100}]}>
+          <View style={{ flexDirection: 'column', justifyContent:"space-around"}}>
+            <Text style={[styles.itemText, { color: textColor, marginRight: 0, marginLeft: 20}]}>{colis}</Text>
+            <Text style={[styles.itemText, { color: textColor, marginRight: 0, marginLeft: 20, marginBottom:30}]}>{letter}</Text>
           </View>
 
-          <View style={{ flexDirection: 'column', flex: 1 }}>
+          <View style={{ flexDirection: 'column', marginTop:0, marginBottom:0 }}>
             <Ionicons
               color="#1d4274"
               name='cube-outline'
               size={40}
-              style={{ flex: 0.7 }}
+              
             ></Ionicons>
             <Ionicons
                 color="#1d4274"
@@ -177,11 +177,11 @@ const HistoriquePage = () => {
             ></Ionicons>
           </View>
   
-          <Text style={[styles.itemText, { color: textColor, flex:1}]}>{time}</Text>
-          <Text style={[styles.itemText, { color: textColor, flex: 2 }]}>{date}</Text>
+          <Text style={[styles.itemText, { color: textColor}]}>{time}</Text>
+          <Text style={[styles.itemText, { color: textColor}]}>{date}</Text>
 
           <TouchableOpacity onPress={() => toggleCheckbox(item)}>
-            <View style={{ flex: 1 }}>
+            <View>
               <View
                 style={{
                   width: 20,
@@ -189,14 +189,14 @@ const HistoriquePage = () => {
                   borderRadius: 5,
                   borderWidth: 2,
                   borderColor: '#1d4274',
-                  marginRight: 20,
+                  // marginRight: 15,
                   backgroundColor: selectedItems.includes(item) ? '#1d4274' : '#f8e499',
                 }}
               />
             </View>
           </TouchableOpacity>
           
-            <TouchableOpacity onPress={() => handleTrashClick()} style={{ flex: 1, marginRight: 20, marginTop:40 }}>
+            <TouchableOpacity onPress={() => handleTrashClick()} style={{  marginRight: 15 }}>
               <Ionicons
                 color="#1d4274"
                 name='trash-outline'
@@ -327,6 +327,69 @@ const HistoriquePage = () => {
         </View>
       </View>
 
+      {/* Popup */}
+      {popupTrashVisible && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "white",
+              padding: 20,
+              borderRadius: 8,
+              shadowColor: "#000",
+              shadowOffset: { width: 2, height: 2 },
+              shadowOpacity: 0.5,
+              shadowRadius: 4,
+            }}
+          >
+            <Text>TODO </Text>
+            <Text>Ce bouton permet de supprimer le message </Text>
+          </View>
+        </View>
+      )}
+      {/* Popup */}
+      {popupUserVisible && (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+          }}
+        >
+          <View
+            style={{
+              backgroundColor: "white",
+              padding: 20,
+              borderRadius: 8,
+              shadowColor: "#000",
+              shadowOffset: { width: 2, height: 2 },
+              shadowOpacity: 0.5,
+              shadowRadius: 4,
+            }}
+          >
+            <Text>TODO </Text>
+            <Text>Ce bouton ouvre des paramètres  </Text>
+          </View>
+        </View>
+      )}
+
       {/* Footer Bar */}
       <View
         style={{
@@ -371,6 +434,7 @@ const styles = StyleSheet.create({
   },
 
   menuText: {
+    fontFamily : Platform.OS === 'ios' ? "Futura" : "sans-serif-condensed",
     color: "white",
     textAlign: "center",
     alignSelf:"center",
@@ -382,6 +446,7 @@ const styles = StyleSheet.create({
 },
 
 menuTextSelected: {
+  fontFamily : Platform.OS === 'ios' ? "Futura" : "sans-serif-condensed",
     alignSelf:"center",
     color: "#1d4274",
     textAlign: "center",
@@ -393,45 +458,49 @@ menuTextSelected: {
 },
 
 menuContainerSelected: {
-    alignItems: "center",
-    justifyContent:"center",
-    backgroundColor: "#f8e499",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-    paddingHorizontal: 20,
-    paddingTop:8,
-    
-    shadowColor: "#000",
-    shadowOffset: { width: 2, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 4,
-    marginTop: 10,
-    position: "relative", // Ensure the button is positioned relative to this parent
+  height: 50,
+  alignItems: "center",
+  justifyContent:"center",
+  backgroundColor: "#f8e499",
+  borderTopLeftRadius: 20,
+  borderTopRightRadius: 20,
+  borderBottomLeftRadius: 20,
+  borderBottomRightRadius: 20,
+  paddingHorizontal: 20,
+  paddingTop: Platform.OS === 'ios' ? 10 : 5 ,
+  
+  shadowColor: "#000",
+  shadowOffset: { width: 2, height: 2 },
+  shadowOpacity: 0.5,
+  shadowRadius: 4,
+  marginTop: 10,
+  position: "relative", // Ensure the button is positioned relative to this parent
 },
 
 
 menuContainer: {
-    alignItems: "center",
-    justifyContent:"center",
-    backgroundColor: "#1d4274",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-    paddingHorizontal: 20,
-    paddingTop: 8,
-    marginTop: 10,
-    position: "relative", // Ensure the button is positioned relative to this parent
+  height: 50,
+  alignItems: "center",
+  justifyContent:"center",
+  backgroundColor: "#1d4274",
+  borderTopLeftRadius: 30,
+  borderTopRightRadius: 30,
+  borderBottomLeftRadius: 30,
+  borderBottomRightRadius: 30,
+  paddingHorizontal: 20,
+  paddingTop: Platform.OS === 'ios' ? 10 : 5 ,
+  marginTop: 10,
+  position: "relative", // Ensure the button is positioned relative to this parent
 },
 
   container: {
+      height : 550,
       alignSelf: "stretch",
       alignItems: "center",
       paddingTop: 40,
       paddingBottom: 40,
-      marginTop:20,
+      
+      marginTop: Platform.OS === 'ios' ? 30: 0,
       marginBottom: 10,
       position: "relative", // Ensure the button is positioned relative to this parent
   },
@@ -447,6 +516,7 @@ menuContainer: {
   },
 
   containerBarText: {
+    fontFamily : Platform.OS === 'ios' ? "Futura" : "sans-serif-condensed",
       color: "white",
       flex: 1,
       fontSize: 20,
@@ -471,10 +541,11 @@ menuContainer: {
   },
 
   itemText: {
-      fontSize: 15,
+    fontFamily : Platform.OS === 'ios' ? "Futura" : "sans-serif-condensed",
+      fontSize: Platform.OS === 'ios' ? 20 : 15,
       color: "black",
       position: "relative", // Ensure the button is positioned relative to this parent
-      marginHorizontal: 20,
+      
       marginVertical: 20,
   },
 
