@@ -26,4 +26,4 @@ async function putMessage(message) {
   });
 }
 
-module.exports = { getMessages, postMessage };
+module.exports = { getMessages, postMessage, putMessage };
