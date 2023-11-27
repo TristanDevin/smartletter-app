@@ -42,10 +42,11 @@ app.route("/message").post(async (req, res) => {
   var payload = json.value.payload;
   // Convert the payload from hex to ascii
   var ascii = hexToAscii(payload);
-  // Split the ascii at / to get the different fields
+  // Split the ascii at / to get the different fields and convert them to numbers
   var fields = ascii.split("/");
-  var numLetter = fields[0];
-  var numColis = fields[1];
+  var numLetter = parseInt(fields[0]);
+  var numColis = parseInt(fields[1]);
+  
   var data = {
     senderDevice: json.id,
     numLetter: numLetter,
