@@ -43,8 +43,28 @@ const pool = new Pool({
 });
 
 async function getMessages() {
-  return pool.query('SELECT * FROM "Message"; ');
+  return prisma.message.findMany();
 }
 
-module.exports = { getMessages };
->>>>>>> 31326cd9a969e11594653d5050510b485fa2e3df
+async function postMessage(message) {
+  return prisma.message.create({
+    data: {
+      senderDevice: message.senderDevice,
+      numLetter: message.numLetter,
+      numColis: message.numColis,
+      receivedAt: message.receivedAt,
+      retrieved: message.retrieved,
+    },
+  });
+}
+
+async function putMessage(message) {
+  return prisma.message.update({
+    where: { id: message.id },
+    data: {
+      retrieved: message.retrieved,
+    },
+  });
+}
+
+module.exports = { getMessages, postMessage, putMessage };
