@@ -38,17 +38,17 @@ function hexToAscii(hexString) {
 
 app.route("/message").post(async (req, res) => {
   try {
-    var data = { id: req.body.id };
-    let letter_colis_string = hexToAscii(req.body.payload);
-    letter_colis = letter_colis_string.split("/");
-    data.letter = letter_colis[0];
-    data.colis = letter_colis[1];
-    data.datetime = req.body.datetime;
-    data.recupere = false;
-    console.log(data);
-    const message = await db.postMessage(data);
-  } catch (error) {
+  var json = req.body;
+  var data = { id: json.id };
+  data.letter = hexToAscii(json.value.payload);
+  data.colis = hexToAscii(json.value.payload)
+
+  data.datetime = new Date();
+  data.recupere = false;
+  const message = await db.postMessage(data);
+    catch (error) {
     console.error("Error posting message:", error);
+    console.error("message was :", req.body);
     res.status(500).send("Internal Server Error");
   }
 });
