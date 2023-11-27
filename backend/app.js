@@ -1,72 +1,70 @@
 const express = require("express");
-var request = require('request');
+var request = require("request");
 require("dotenv").config();
-const cors = require('cors');
+const cors = require("cors");
 
-var fs = require('fs');
+var fs = require("fs");
 
-const db = require('./db.js');
+const db = require("./db.js");
 
-const app = express();  
+const app = express();
 app.use(express.json());
 app.use(cors());
-const port = 3000;
+const port = 8080;
 
 function hexToAscii(hexString) {
-  let asciiString = '';
-  
+  let asciiString = "";
+
   for (let i = 0; i < hexString.length; i += 2) {
-      let hex = hexString.substr(i, 2);
-      let decimal = parseInt(hex, 16);
-      asciiString += String.fromCharCode(decimal);
+    let hex = hexString.substr(i, 2);
+    let decimal = parseInt(hex, 16);
+    asciiString += String.fromCharCode(decimal);
   }
-  
+
   return asciiString;
 }
 
 function hexToAscii(hexString) {
-  let asciiString = '';
-  
+  let asciiString = "";
+
   for (let i = 0; i < hexString.length; i += 2) {
-      let hex = hexString.substr(i, 2);
-      let decimal = parseInt(hex, 16);
-      asciiString += String.fromCharCode(decimal);
+    let hex = hexString.substr(i, 2);
+    let decimal = parseInt(hex, 16);
+    asciiString += String.fromCharCode(decimal);
   }
-  
+
   return asciiString;
 }
 
-app.route('/data').post(async(req, res) => { 
-  try{
-    var json = {"id":req.body.id};
+app.route("/message").post(async (req, res) => {
+  try {
+    var data = { id: req.body.id };
     let letter_colis_string = hexToAscii(req.body.payload);
-    letter_colis = letter_colis_string.split('/');
-    json.letter = letter_colis[0];
-    json.colis = letter_colis[1];
-    json.datetime = req.body.datetime;
-    json.recupere = false;
-    console.log(json);
-
-    var json = JSON.stringify(json);
-    fs.writeFile('test.json', json, 'utf8', function(err) {
-      if (err) console.log(err);
-    });
-  } catch(err){
-    console.log(err);
+    letter_colis = letter_colis_string.split("/");
+    data.letter = letter_colis[0];
+    data.colis = letter_colis[1];
+    data.datetime = req.body.datetime;
+    data.recupere = false;
+    console.log(data);
+    const message = await db.postMessage(data);
+  } catch (error) {
+    console.error("Error posting message:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
-app.route('/messages').get(async(req, res) => { 
-  console.log("get")
-  fs.readFile('test.json', (err, data) => {
-    if (err) console.log(err);
-    res.send(data)
-  });
-
-  
+app.route("/message").put(async (req, res) => {
+  try {
+    var data = { id: req.body.id };
+    data.recupere = true;
+    const message = await db.putMessage(data);
+  } catch (error) {
+    console.error("Error posting message:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
-app.route('/').get(async (req, res) => {
+app.route("/messages").get(async (req, res) => {
   try {
     const messages = await db.getMessages();
     res.send(messages.rows);
@@ -74,10 +72,6 @@ app.route('/').get(async (req, res) => {
     console.error("Error fetching messages:", error);
     res.status(500).send("Internal Server Error");
   }
-});
-
-app.route('/dev').get((req, res) => {
-    res.send("test");    
 });
 
 app.listen(port, () => {

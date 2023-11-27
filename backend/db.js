@@ -1,18 +1,29 @@
-const { Pool } = require("pg");
-require("dotenv").config(); // Load environment variables from .env
-
-
-
-const pool = new Pool({
-  user: process.env.DATABASE_USER,
-  host: process.env.DATABASE_HOST,
-  database: process.env.DATABASE_NAME,
-  password: process.env.DATABASE_PASS,
-  port: process.env.DATABASE_PORT,
-});
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
 async function getMessages() {
-  return pool.query('SELECT * FROM "Message"; ');
+  return prisma.message.findMany();
 }
 
-module.exports = { getMessages };
+async function postMessage(message) {
+  return prisma.message.create({
+    data: {
+      id: message.id,
+      letter: message.letter,
+      colis: message.colis,
+      datetime: message.datetime,
+      recupere: message.recupere,
+    },
+  });
+}
+
+async function putMessage(message) {
+  return prisma.message.update({
+    where: { id: message.id },
+    data: {
+      recupere: message.recupere,
+    },
+  });
+}
+
+module.exports = { getMessages, postMessage };
