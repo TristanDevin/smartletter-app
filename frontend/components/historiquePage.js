@@ -31,6 +31,7 @@ const HistoriquePage = () => {
   const [popupTrashVisible, setPopupTrashVisible] = useState(false);
   const [popupUserVisible, setPopupUserVisible] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
+  const [test, setTest] = useState("");
   const [selectedItems, setSelectedItems] = useState([]);
   const [jsonData, setJsonData] = useState(null);
 
@@ -100,7 +101,7 @@ const HistoriquePage = () => {
                     borderWidth: 2,
                     borderColor: '#1d4274',
                     marginRight: 20,
-                    backgroundColor: selectedItems.includes(item) ? '#1d4274' : '#f8e499',
+                    backgroundColor: item.retrieved ? '#1d4274' : '#f8e499',
                   }}
                 />
 
@@ -140,7 +141,7 @@ const HistoriquePage = () => {
                   borderWidth: 2,
                   borderColor: '#1d4274',
                   marginRight: 20,
-                  backgroundColor: selectedItems.includes(item) ? '#1d4274' : '#f8e499',
+                  backgroundColor: item.retrieved ? '#1d4274' : '#f8e499',
                 }}
               />
 
@@ -198,7 +199,7 @@ const HistoriquePage = () => {
                   borderWidth: 2,
                   borderColor: '#1d4274',
                   // marginRight: 15,
-                  backgroundColor: selectedItems.includes(item) ? '#1d4274' : '#f8e499',
+                  backgroundColor: item.retrieved ? '#1d4274' : '#f8e499',
                 }}
               />
             </View>
@@ -219,12 +220,63 @@ const HistoriquePage = () => {
     }
   };
 
+  const modifyData = async (item, flag) => {
+
+    const getAllUrl = 'http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages';
+    const updateUrl = 'http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/message';
+  // Fetch the data to find messages with the id
+    fetch(getAllUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        // Filter the  messages with the id
+        const filteredData = data.filter((message) => message.id === item.id);
+        // Modify each specific record as needed
+        filteredData.forEach((record) => {
+          // Update properties of the record
+          record.retrieved = true;
+        });
+
+        const myItem = filteredData[0];
+        console.log(JSON.stringify(item.id));
+        // Use the PATCH method to update the specific records
+        fetch(updateUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: { id: "2" },
+        })
+          .then((response) => {
+            console.log("Server Response:", response.text());
+          })
+          .then((updatedData) => {
+            console.log(
+              "Records updated successfully:",
+              JSON.stringify(updatedData)
+            );
+          })
+          .catch((error) => {
+            console.error("Error updating records:", error);
+          });
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+
+  };
+
+
+
+
   const toggleCheckbox = (item) => {
+    
     const isSelected = selectedItems.includes(item);
     if (isSelected) {
+      modifyData(item, true);
       //item.recupere = true;
       setSelectedItems(selectedItems.filter((element) => element.id !== item.id));
     } else {
+      modifyData(item, false);
       //item.recupere = false;
       setSelectedItems([...selectedItems, item]);
     }
@@ -233,8 +285,8 @@ const HistoriquePage = () => {
 
 
   const renderItem = ({ item }) => {
-    const backgroundColor = selectedItems.includes(item) ?'#919191' : '#f8e499';
-    const color = selectedItems.includes(item) ? '#1d4274' : '#1d4274';
+    const backgroundColor = item.retrieved ?'#919191' : '#f8e499';
+    const color = item.retrieved ? '#1d4274' : '#1d4274';
     return (
       <Item
         letter={item.numLetter}
@@ -312,7 +364,11 @@ const HistoriquePage = () => {
           </TouchableOpacity>
         </View>*/}
       </View>
-
+      <View >
+        <Text>
+          {test}
+        </Text>
+      </View>
       {/* Main Content */}
       <View style={styles.containerBar}>
         <Text style={[styles.containerBarText, { flex :1 }]} >Type</Text>
