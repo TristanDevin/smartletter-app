@@ -8,7 +8,6 @@ async function getMessages() {
 async function postMessage(message) {
   return prisma.message.create({
     data: {
-      id: message.id,
       senderDevice: message.senderDevice,
       numLetter: message.numLetter,
       numColis: message.numColis,
