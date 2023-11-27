@@ -3,7 +3,9 @@ import { View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import IndexPage from "./components/index";
-import ColisPage from "./components/colisPage";
+import HistoriquePage from "./components/historiquePage";
+import TableauDeBordPage from "./components/tableauDeBordPage";
+
 
 const Stack = createStackNavigator();
 
@@ -17,10 +19,19 @@ export default function App() {
           options={{ headerShown: false }} // Hide the header bar for this screen
         />
         <Stack.Screen
-          name="Colis"
-          component={ColisPage}
+          name="Historique"
+          component={HistoriquePage}
           options={{ headerShown: false }} // Hide the header bar for this screen
         />
+
+        <Stack.Screen
+            name="TableauDeBord"
+            component={TableauDeBordPage}
+            options={{ headerShown: false }} // Hide the header bar for this screen
+        />
+        
+
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
