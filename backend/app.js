@@ -38,39 +38,38 @@ function hexToAscii(hexString) {
 
 app.route("/message").post(async (req, res) => {
   try {
-  var json = req.body;
-  var payload = json.value.payload;
-  // Convert the payload from hex to ascii
-  var ascii = hexToAscii(payload);
-  // Split the ascii at / to get the different fields and convert them to numbers
-  var fields = ascii.split("/");
-  var numLetter = parseInt(fields[0]);
-  var numColis = parseInt(fields[1]);
-  
-  var data = {
-    senderDevice: json.id,
-    numLetter: numLetter,
-    numColis: numColis,
-    receivedAt: json.created,
-    retrieved: false,
-  };
+    var json = req.body;
+    var payload = json.value.payload;
+    // Convert the payload from hex to ascii
+    var ascii = hexToAscii(payload);
+    // Split the ascii at / to get the different fields and convert them to numbers
+    var fields = ascii.split("/");
+    var numLetter = parseInt(fields[0]);
+    var numColis = parseInt(fields[1]);
 
-  const message = await db.postMessage(data);
-  }
-  catch (error) {
+    var data = {
+      senderDevice: json.id,
+      numLetter: numLetter,
+      numColis: numColis,
+      receivedAt: json.created,
+      retrieved: false,
+    };
+    const message = await db.postMessage(data);
+    res.status(200).send("OK");
+  } catch (error) {
     console.error("Error posting message:", error);
     console.error("Message:", req.body);
     res.status(500).send("Internal Server Error");
   }
-}
-);
-
+  res.status(200).send("OK");
+});
 
 app.route("/message").put(async (req, res) => {
   try {
     var data = { id: req.body.id };
     data.retrieved = true;
     const message = await db.putMessage(data);
+    res.status(200).send("OK");
   } catch (error) {
     console.error("Error posting message:", error);
     res.status(500).send("Internal Server Error");
