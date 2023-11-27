@@ -26,4 +26,17 @@ async function putMessage(message) {
   });
 }
 
-module.exports = { getMessages, postMessage, putMessage };
+async function deleteMessage(message) {
+  return prisma.message.delete({
+    where: { id: message.id },
+  });
+}
+
+async function getMessage(message) {
+  return prisma.message.findUnique({
+    where: { id: message.id },
+  });
+}
+
+
+module.exports = { getMessages, postMessage, putMessage, deleteMessage, getMessage };

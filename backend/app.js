@@ -74,6 +74,30 @@ app.route("/message").put(async (req, res) => {
   }
 });
 
+app.route("/message").get(async (req, res) => {
+  try {
+    var data = { id: req.body.id };
+    const message = await db.getMessage(data);
+    res.send(message);
+  } catch (error) {
+    console.error("Error fetching message:", error);
+    res.status(500).send("Internal Server Error");
+  }
+}
+);
+
+app.route("/message").delete(async (req, res) => {
+  try {
+    var data = { id: req.body.id };
+    const message = await db.deleteMessage(data);
+    res.status(200).send("OK");
+  } catch (error) {
+    console.error("Error deleting messages:", error);
+    res.status(500).send("Internal Server Error");
+  }
+}
+);
+
 app.route("/messages").get(async (req, res) => {
   try {
     const messages = await db.getMessages();
