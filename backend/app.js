@@ -64,8 +64,7 @@ app.route("/message").post(async (req, res) => {
 
 app.route("/message").put(async (req, res) => {
   try {
-    var data = { id: req.body.id };
-    data.retrieved = true;
+    var data = { id: req.body.id, retrieved: req.body.retrieved };
     const message = await db.putMessage(data);
     res.status(200).send("OK");
   } catch (error) {
