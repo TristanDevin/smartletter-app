@@ -222,44 +222,45 @@ const HistoriquePage = () => {
 
   const modifyData = async (item, flag) => {
 
-    const apiUrl = 'http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages';
-
+    const getAllUrl = 'http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages';
+    const updateUrl = 'http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/message';
   // Fetch the data to find messages with the id
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => {
+    fetch(getAllUrl)
+      .then((response) => response.json())
+      .then((data) => {
         // Filter the  messages with the id
-        const filteredData = data.filter(message => message.id === item.id);
+        const filteredData = data.filter((message) => message.id === item.id);
         // Modify each specific record as needed
-        filteredData.forEach(record => {
+        filteredData.forEach((record) => {
           // Update properties of the record
-          record.retrieved=true;
+          record.retrieved = true;
         });
-        
+
         const myItem = filteredData[0];
         console.log(JSON.stringify(item.id));
         // Use the PATCH method to update the specific records
-        fetch(apiUrl, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: {'id':'2'},
-
+        fetch(updateUrl, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: { id: "2" },
+        })
+          .then((response) => {
+            console.log("Server Response:", response.text());
           })
-
-          .then(response => {
-            console.log('Server Response:', response.text());
+          .then((updatedData) => {
+            console.log(
+              "Records updated successfully:",
+              JSON.stringify(updatedData)
+            );
           })
-          .then(updatedData => {
-            console.log('Records updated successfully:', JSON.stringify(updatedData));
-          })
-          .catch(error => {
-            console.error('Error updating records:', error);
+          .catch((error) => {
+            console.error("Error updating records:", error);
           });
       })
-      .catch(error => {
-        console.error('Error fetching data:', error);
+      .catch((error) => {
+        console.error("Error fetching data:", error);
       });
 
   };
