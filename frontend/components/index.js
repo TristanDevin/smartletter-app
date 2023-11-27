@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, Platform } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo package
 import { NavigationContainer } from "@react-navigation/native";
@@ -43,7 +43,7 @@ export default function IndexPage() {
     const fetchData = async () => {
       try {
         // Using fetch API
-        const response = await fetch('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000');
+        const response = await fetch('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages');
         const data = await response.json();
         setJsonData(data);
         const sumL = data.reduce((acc, item) => acc + item.numLetter, 0);
