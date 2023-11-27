@@ -26,6 +26,7 @@ async function putMessage(message) {
   });
 }
 
+
 async function deleteMessage(message) {
   return prisma.message.delete({
     where: { id: message.id },
