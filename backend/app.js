@@ -67,7 +67,7 @@ app.route("/message").put(async (req, res) => {
 app.route("/messages").get(async (req, res) => {
   try {
     const messages = await db.getMessages();
-    res.send(messages.rows);
+    res.send(messages);
   } catch (error) {
     console.error("Error fetching messages:", error);
     res.status(500).send("Internal Server Error");
