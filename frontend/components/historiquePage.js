@@ -15,24 +15,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 
 
-function getChecked(DATA) {
-  var list = [];
-  for (const element of DATA) {
-    if (element.recupere == true) {
-      list.push(element);
-    };
-  };
-  return (list);
-};
-
 
 
 const HistoriquePage = () => {
+  
   const [popupTrashVisible, setPopupTrashVisible] = useState(false);
   const [popupUserVisible, setPopupUserVisible] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
-  const [test, setTest] = useState("");
-  const [selectedItems, setSelectedItems] = useState([]);
   const [jsonData, setJsonData] = useState(null);
 
   const navigation = useNavigation();
@@ -45,22 +34,22 @@ const HistoriquePage = () => {
           "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages"
         );
         const data = await response.json();
-        setJsonData(data);
+        const sortedData = data.sort((a, b) => b.id - a.id);
+        setJsonData(sortedData);
       } catch (error) {
         window.alert(error);
-        setJsonData(error);
+
         console.error("Error fetching data:", error);
       }
     };
 
+
+    
     fetchData();
   }, []); // Empty dependency array ensures that this effect runs once on mount
 
-  const handleTrashClick = () => {
-    setPopupTrashVisible(true);
-    setTimeout(() => {
-      setPopupTrashVisible(false);
-    }, 3000); // Close the popup after 1.5 seconds (1500 milliseconds)
+  const handleTrashClick = (item) => {
+    deleteData(item);
   };
 
   const handleUserClick = () => {
@@ -81,89 +70,32 @@ const HistoriquePage = () => {
   }) => {
     if (letter == "0") {
       return (
-        <View>
-          <View style={[styles.item, { backgroundColor }]}>
+        <View
+          style={[
+            styles.item,
+            { backgroundColor , flexDirection: "row", height: 80 },
+          ]}
+        >
             <Text
               style={[
                 styles.itemText,
                 {
                   color: textColor,
-                  flex: 0.25,
                   marginRight: 0,
                   marginLeft: 20,
+                  marginBottom: 20,
                 },
               ]}
             >
               {colis}
             </Text>
-            <Ionicons
-              color="#1d4274"
-              name="cube-outline"
-              size={50}
-              style={{ flex: 0.7 }}
-            ></Ionicons>
-
-            <Text style={[styles.itemText, { color: textColor, flex: 0.7 }]}>
-              {time}
-            </Text>
-            <Text style={[styles.itemText, { color: textColor, flex: 1 }]}>
-              {date}
-            </Text>
-
-            <TouchableOpacity onPress={() => toggleCheckbox(item)}>
-              <View style={{ flexDirection: "row", flex: 1.2 }}>
-                <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: 5,
-                    borderWidth: 2,
-                    borderColor: "#1d4274",
-                    marginRight: 20,
-                    backgroundColor: item.retrieved ? "#1d4274" : "#f8e499",
-                  }}
-                />
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => handleTrashClick()}
-              style={{ flex: 0.5, marginRight: 20 }}
-            >
-              <Ionicons
-                color="#1d4274"
-                name="trash-outline"
-                size={25}
-              ></Ionicons>
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
-    } else if (colis == "0") {
-      return (
-        <View style={[styles.item, { backgroundColor }]}>
-          <Text
-            style={[
-              styles.itemText,
-              { color: textColor, flex: 0.25, marginRight: 0, marginLeft: 20 },
-            ]}
-          >
-            {letter}
-          </Text>
-          <Ionicons
-            color="#1d4274"
-            name="mail-outline"
-            size={50}
-            style={{ flex: 0.7 }}
-          ></Ionicons>
-          <Text style={[styles.itemText, { color: textColor, flex: 0.7 }]}>
-            {time}
-          </Text>
-          <Text style={[styles.itemText, { color: textColor, flex: 1 }]}>
-            {date}
-          </Text>
+          <Ionicons color="#1d4274" name="cube-outline" size={40}></Ionicons>
+         
+          <Text style={[styles.itemText, { color: textColor }]}>{time}</Text>
+          <Text style={[styles.itemText, { color: textColor }]}>{date}</Text>
 
           <TouchableOpacity onPress={() => toggleCheckbox(item)}>
-            <View style={{ flexDirection: "row", flex: 1 }}>
+            <View>
               <View
                 style={{
                   width: 20,
@@ -171,7 +103,7 @@ const HistoriquePage = () => {
                   borderRadius: 5,
                   borderWidth: 2,
                   borderColor: "#1d4274",
-                  marginRight: 20,
+                  // marginRight: 15,
                   backgroundColor: item.retrieved ? "#1d4274" : "#f8e499",
                 }}
               />
@@ -179,8 +111,58 @@ const HistoriquePage = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => handleTrashClick()}
-            style={{ flex: 0.5, marginRight: 20 }}
+            onPress={() => handleTrashClick(item)}
+            style={{ marginRight: 15 }}
+          >
+            <Ionicons color="#1d4274" name="trash-outline" size={25}></Ionicons>
+          </TouchableOpacity>
+        </View>
+      );
+    } else if (colis == "0") {
+      return (
+        <View
+          style={[
+            styles.item,
+            { backgroundColor , flexDirection: "row", height: 80 },
+          ]}
+        >
+            <Text
+              style={[
+                styles.itemText,
+                {
+                  color: textColor,
+                  marginRight: 0,
+                  marginLeft: 20,
+                  marginBottom: 20,
+                },
+              ]}
+            >
+              {letter}
+            </Text>
+          <Ionicons color="#1d4274" name="mail-outline" size={40}></Ionicons>
+         
+          <Text style={[styles.itemText, { color: textColor }]}>{time}</Text>
+          <Text style={[styles.itemText, { color: textColor }]}>{date}</Text>
+
+          <TouchableOpacity onPress={() => toggleCheckbox(item)}>
+            <View>
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 5,
+                  borderWidth: 2,
+                  borderColor: "#1d4274",
+                  // marginRight: 15,
+                  backgroundColor: item.retrieved ? "#1d4274" : "#f8e499",
+                }}
+              />
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => handleTrashClick(item)}
+            style={{ marginRight: 15 }}
           >
             <Ionicons color="#1d4274" name="trash-outline" size={25}></Ionicons>
           </TouchableOpacity>
@@ -191,7 +173,7 @@ const HistoriquePage = () => {
         <View
           style={[
             styles.item,
-            { backgroundColor, flexDirection: "row", height: 100 },
+            { backgroundColor , flexDirection: "row", height: 100 },
           ]}
         >
           <View
@@ -247,7 +229,7 @@ const HistoriquePage = () => {
           </TouchableOpacity>
 
           <TouchableOpacity
-            onPress={() => handleTrashClick()}
+            onPress={() => handleTrashClick(item)}
             style={{ marginRight: 15 }}
           >
             <Ionicons color="#1d4274" name="trash-outline" size={25}></Ionicons>
@@ -257,7 +239,49 @@ const HistoriquePage = () => {
     }
   };
 
-  const modifyData = async (item) => {
+  const deleteData = async (item) => {
+    try {
+      const getAllUrl =
+        "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages";
+      const updateUrl =
+        "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/message";
+
+      // Fetch the data to find messages with the id
+      const response = await fetch(getAllUrl);
+      const data = await response.json();
+      //getTotal(data);
+
+      // Modify each specific record as needed
+
+      const sortedData = data.filter(element => element.id !== item.id);
+      setJsonData(sortedData);
+
+
+      // Use the PUT method to update the specific record
+      const updateResponse = await fetch(updateUrl, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ id: item.id }),
+      });
+
+      if (updateResponse.ok) {
+        console.log("Record updated successfully");
+        //console.log(updateResponse);
+      } else {
+        console.error("Error updating record:", updateResponse.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+
+
+
+  const modifyData = async (item, flag) => {
     try {
       const getAllUrl =
         "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages";
@@ -269,15 +293,20 @@ const HistoriquePage = () => {
       const data = await response.json();
 
       // Filter the messages with the id
-      const filteredData = data.filter((message) => message.id === item.id);
+      //const filteredData = data.filter((message) => message.id === item.id);
 
       // Modify each specific record as needed
-      filteredData.forEach((record) => {
+  
+      data.forEach((record) => {
         // Update properties of the record
-        record.retrieved = true;
+        if (record.id === item.id){
+          record.retrieved = flag;
+        };
+        
       });
+      const sortedData = data.sort((a, b) => b.id - a.id);
+      setJsonData(sortedData);
 
-      const myItem = filteredData[0];
 
       // Use the PUT method to update the specific record
       const updateResponse = await fetch(updateUrl, {
@@ -286,11 +315,12 @@ const HistoriquePage = () => {
           "Content-Type": "application/json",
           "Access-Control-Allow-Origin": "*",
         },
-        body: JSON.stringify({ id: myItem.id, retrieved: true }),
+        body: JSON.stringify({ id: item.id, retrieved: flag }),
       });
 
       if (updateResponse.ok) {
         console.log("Record updated successfully");
+        //console.log(updateResponse);
       } else {
         console.error("Error updating record:", updateResponse.statusText);
       }
@@ -299,21 +329,20 @@ const HistoriquePage = () => {
     }
   };
 
+
+
   // Example usage:
   // modifyData({ id: 2 });
 
   const toggleCheckbox = (item) => {
-    const isSelected = selectedItems.includes(item);
-    if (isSelected) {
-      modifyData(item, true);
-      //item.recupere = true;
-      setSelectedItems(
-        selectedItems.filter((element) => element.id !== item.id)
-      );
-    } else {
+
+    if (item.retrieved ) { 
       modifyData(item, false);
+      console.log("true ", item.id)
+    } else {
+      modifyData(item, true);
+      console.log("false ", item.id)
       //item.recupere = false;
-      setSelectedItems([...selectedItems, item]);
     }
   };
 
@@ -325,8 +354,9 @@ const HistoriquePage = () => {
         letter={item.numLetter}
         colis={item.numColis}
         item={item}
-        date={item.receivedAt.split("T")[0].split("-").reverse().join("/")}
-        time={item.receivedAt.split("T")[1].slice(0, 5)}
+        time={[parseInt(item.receivedAt.split("T")[1].split(":")[0]) === 23 ? "00" : parseInt(item.receivedAt.split("T")[1].split(":")[0]) + 1,":", item.receivedAt.split("T")[1].split(":")[1],]}
+        date={parseInt(item.receivedAt.split("T")[1].split(":")[0]) === 23 ? 
+          [parseInt(item.receivedAt.split("T")[0].split("-")[2]) + 1 , "/", item.receivedAt.split("T")[0].split("-")[1], "/", item.receivedAt.split("T")[0].split("-")[0]]  :  item.receivedAt.split("T")[0].split("-").reverse().join("/")}
         backgroundColor={backgroundColor}
         textColor={color}
       />
@@ -382,9 +412,7 @@ const HistoriquePage = () => {
           </TouchableOpacity>
         </View>*/}
       </View>
-      <View>
-        <Text>{test}</Text>
-      </View>
+    
       {/* Main Content */}
       <View style={styles.containerBar}>
         <Text style={[styles.containerBarText, { flex: 1 }]}>Type</Text>

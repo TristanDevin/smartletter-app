@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect} from "react";
 import { View, Text, Image, StyleSheet, Platform } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo package
-import { NavigationContainer } from "@react-navigation/native";
+
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 
 
 export default function IndexPage() {
+  
   const [popupButtonVisible, setPopupButtonVisible] = useState(false);
   const [popupUserVisible, setPopupUserVisible] = useState(false);
   const navigation = useNavigation();
   const [jsonData, setJsonData] = useState(null);
   const [totalLetter, setTotalLetter] = useState(0);
   const [totalColis, setTotalColis] = useState(0);
-
   
   //http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000
 
@@ -25,11 +25,16 @@ export default function IndexPage() {
 
 
   const handleButtonClick = () => {
-    setPopupButtonVisible(true);
-    setTimeout(() => {
-      setPopupButtonVisible(false);
-    }, 3000); // Close the popup after 1.5 seconds (1500 milliseconds)
-  };
+    jsonData.forEach((record) => {
+      // Update properties of the record
+      if (record.retrieved === false ){
+        modifyDataTrue(record);
+        record.retrieved = true;
+      };
+    });
+    //fetchData();
+    getTotal(jsonData);
+   };
 
 
   const handleUserClick = () => {
@@ -39,38 +44,102 @@ export default function IndexPage() {
     }, 3000); // Close the popup after 1.5 seconds (1500 milliseconds)
   };
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Using fetch API
-        const response = await fetch('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages');
-        const data = await response.json();
-        setJsonData(data);
-        const sumL = data.reduce((acc, item) => acc + item.numLetter, 0);
-        setTotalLetter(sumL);
-        const sumC = data.reduce((acc, item) => acc + item.numColis, 0);
-        setTotalColis(sumC);
-        //API pour test le get : 
-        //https://mocki.io/v1/be3cb19b-bd49-4a82-b19b-44b859e19d5d
-        //notre api : 
-        //'http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000'
-
-        // // If using axios
-        //const response = await axios.get('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000');
-        //setJsonData(response.data);
-      } catch (error) {
-        window.alert(error);
-        setJsonData(error);
-        console.error('Error fetching data:', error);
+  const getTotal = (data) => {
+    const sumL = data.reduce((acc, item) => {
+      // Only add numLetter if item.retrieved is false
+      if (!item.retrieved) {
+        return acc + item.numLetter;
+      } else {
+        return acc;
       }
+    }, 0);
+    setTotalLetter(sumL);
+    const sumC = data.reduce((acc, item) => {
+      // Only add numLetter if item.retrieved is false
+      if (!item.retrieved) {
+        return acc + item.numColis;
+      } else {
+        return acc;
+      }
+    }, 0);
+    setTotalColis(sumC);
+  }
+  
+  const modifyDataTrue = async (item) => {
+    try {
+      const getAllUrl =
+        "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages";
+      const updateUrl =
+        "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/message";
 
-    };
+      // Fetch the data to find messages with the id
+      const response = await fetch(getAllUrl);
+      const data = await response.json();
+      //getTotal(data);
+
+      // Modify each specific record as needed
+
+      data.forEach((record) => {
+        // Update properties of the record
+        if (record.id === item.id){
+          record.retrieved = true;
+        };
+        
+      });
+      const sortedData = data.sort((a, b) => b.id - a.id);
+      setJsonData(sortedData);
+
+
+      // Use the PUT method to update the specific record
+      const updateResponse = await fetch(updateUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ id: item.id, retrieved: true }),
+      });
+
+      if (updateResponse.ok) {
+        console.log("Record updated successfully");
+        //console.log(updateResponse);
+      } else {
+        console.error("Error updating record:", updateResponse.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+  const fetchData = async () => {
+    try {
+      // Using fetch API
+      const response = await fetch('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages');
+
+      const data = await response.json();
+      const sortedData = data.sort((a, b) => b.id - a.id);
+      setJsonData(sortedData);
+      getTotal(sortedData);
+
+    } catch (error) {
+      window.alert(error);
+      console.error('Error fetching data:', error);
+    }
+
+  };
+  useEffect(() => {
+    
     
 
+    const focusListener = navigation.addListener('focus', () => {
+      // Call your function here
+      fetchData();
+    });
 
 
     fetchData();
   }, []); // Empty dependency array ensures that this effect runs once on mount
+
+  
 
 
   return (
@@ -136,7 +205,7 @@ export default function IndexPage() {
                 justifyContent: "center",
               }} >
               <View style={{flexDirection:"row"}}>
-                <Text style={styles.containerText}> {totalLetter} lettres </Text>
+                <Text style={styles.containerText}> {totalLetter} {totalLetter > 1? "lettres" : "lettre"} </Text>
 
               </View>
             </View>
