@@ -243,6 +243,7 @@ const HistoriquePage = () => {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
           },
           body: { id: "2" },
         })
