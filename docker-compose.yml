@@ -5,7 +5,11 @@ services:
     build:
       context: ./backend
     ports:
+<<<<<<< HEAD
       - "8080:8080"
+=======
+      - "3000:3000"
+>>>>>>> 31326cd9a969e11594653d5050510b485fa2e3df
     depends_on:
       - database
     networks:

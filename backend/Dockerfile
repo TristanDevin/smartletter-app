@@ -14,7 +14,11 @@ RUN npm install
 COPY . .
 
 # Expose the port the app runs on
+<<<<<<< HEAD
 EXPOSE 8080
+=======
+EXPOSE 3000
+>>>>>>> 31326cd9a969e11594653d5050510b485fa2e3df
 
 
 # Define the command to run your app
