@@ -32,7 +32,7 @@ const HistoriquePage = () => {
     const fetchData = async () => {
       try {
         // Using fetch API
-        const response = await fetch('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:3000');
+        const response = await fetch('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080');
         const data = await response.json();
         setJsonData(data);
 

@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - mynetwork
+    command: ["bash", "-c", "npx prisma migrate dev && npm run start"]
+
+
+
+  database:
+    image: postgres:alpine
+    container_name: my-database
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"  # Map the PostgreSQL port to the host machine
+    environment:
+      - POSTGRES_DB=mydatabase
+      - POSTGRES_USER=myuser
+      - POSTGRES_PASSWORD=mypassword  # Specify a strong password here
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+
