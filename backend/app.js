@@ -61,7 +61,6 @@ app.route("/message").post(async (req, res) => {
     console.error("Message:", req.body);
     res.status(500).send("Internal Server Error");
   }
-  res.status(200).send("OK");
 });
 
 app.route("/message").put(async (req, res) => {
