@@ -6,7 +6,9 @@ const db = require("./db.js");
 
 const app = express();
 app.use(express.json());
+
 app.use(cors());
+
 const port = 8080;
 
 function hexToAscii(hexString) {

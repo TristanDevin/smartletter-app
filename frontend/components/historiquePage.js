@@ -41,31 +41,27 @@ const HistoriquePage = () => {
     const fetchData = async () => {
       try {
         // Using fetch API
-        const response = await fetch('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages');
+        const response = await fetch(
+          "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages"
+        );
         const data = await response.json();
         setJsonData(data);
-
       } catch (error) {
         window.alert(error);
         setJsonData(error);
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
-
     };
-    
-
-
 
     fetchData();
   }, []); // Empty dependency array ensures that this effect runs once on mount
-  
+
   const handleTrashClick = () => {
     setPopupTrashVisible(true);
     setTimeout(() => {
       setPopupTrashVisible(false);
     }, 3000); // Close the popup after 1.5 seconds (1500 milliseconds)
   };
-
 
   const handleUserClick = () => {
     setPopupUserVisible(true);
@@ -74,120 +70,165 @@ const HistoriquePage = () => {
     }, 3000); // Close the popup after 1.5 seconds (1500 milliseconds)
   };
 
-  const Item = ({ item, backgroundColor, textColor, letter, colis, date, time }) => {
-    if (letter == '0') {
+  const Item = ({
+    item,
+    backgroundColor,
+    textColor,
+    letter,
+    colis,
+    date,
+    time,
+  }) => {
+    if (letter == "0") {
       return (
         <View>
-
           <View style={[styles.item, { backgroundColor }]}>
-            <Text style={[styles.itemText, { color: textColor, flex: 0.25, marginRight: 0, marginLeft: 20 }]}>{colis}</Text>
+            <Text
+              style={[
+                styles.itemText,
+                {
+                  color: textColor,
+                  flex: 0.25,
+                  marginRight: 0,
+                  marginLeft: 20,
+                },
+              ]}
+            >
+              {colis}
+            </Text>
             <Ionicons
-            color="#1d4274"
-            name='cube-outline'
-            size={50}
-            style={{ flex: 0.7 }}
-          ></Ionicons>
-            
-            <Text style={[styles.itemText, { color: textColor, flex: 0.7 }]}>{time}</Text>
-            <Text style={[styles.itemText, { color: textColor, flex: 1 }]}>{date}</Text>
+              color="#1d4274"
+              name="cube-outline"
+              size={50}
+              style={{ flex: 0.7 }}
+            ></Ionicons>
+
+            <Text style={[styles.itemText, { color: textColor, flex: 0.7 }]}>
+              {time}
+            </Text>
+            <Text style={[styles.itemText, { color: textColor, flex: 1 }]}>
+              {date}
+            </Text>
 
             <TouchableOpacity onPress={() => toggleCheckbox(item)}>
-              <View style={{ flexDirection: 'row', flex: 1.2 }}>
+              <View style={{ flexDirection: "row", flex: 1.2 }}>
                 <View
                   style={{
                     width: 20,
                     height: 20,
                     borderRadius: 5,
                     borderWidth: 2,
-                    borderColor: '#1d4274',
+                    borderColor: "#1d4274",
                     marginRight: 20,
-                    backgroundColor: item.retrieved ? '#1d4274' : '#f8e499',
+                    backgroundColor: item.retrieved ? "#1d4274" : "#f8e499",
                   }}
                 />
-
               </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => handleTrashClick()} style={{ flex: 0.5 , marginRight:20}}>
+            <TouchableOpacity
+              onPress={() => handleTrashClick()}
+              style={{ flex: 0.5, marginRight: 20 }}
+            >
               <Ionicons
                 color="#1d4274"
-                name='trash-outline'
+                name="trash-outline"
                 size={25}
-          
               ></Ionicons>
-            </TouchableOpacity >
+            </TouchableOpacity>
           </View>
         </View>
-      )
+      );
     } else if (colis == "0") {
       return (
         <View style={[styles.item, { backgroundColor }]}>
-          <Text style={[styles.itemText, { color: textColor, flex: 0.25, marginRight: 0, marginLeft: 20 }]}>{letter}</Text>
+          <Text
+            style={[
+              styles.itemText,
+              { color: textColor, flex: 0.25, marginRight: 0, marginLeft: 20 },
+            ]}
+          >
+            {letter}
+          </Text>
           <Ionicons
             color="#1d4274"
-            name='mail-outline'
+            name="mail-outline"
             size={50}
             style={{ flex: 0.7 }}
           ></Ionicons>
-          <Text style={[styles.itemText, { color: textColor, flex: 0.7 }]}>{time}</Text>
-          <Text style={[styles.itemText, { color: textColor, flex: 1 }]}>{date}</Text>
+          <Text style={[styles.itemText, { color: textColor, flex: 0.7 }]}>
+            {time}
+          </Text>
+          <Text style={[styles.itemText, { color: textColor, flex: 1 }]}>
+            {date}
+          </Text>
 
           <TouchableOpacity onPress={() => toggleCheckbox(item)}>
-            <View style={{ flexDirection: 'row', flex: 1 }}>
+            <View style={{ flexDirection: "row", flex: 1 }}>
               <View
                 style={{
                   width: 20,
                   height: 20,
                   borderRadius: 5,
                   borderWidth: 2,
-                  borderColor: '#1d4274',
+                  borderColor: "#1d4274",
                   marginRight: 20,
-                  backgroundColor: item.retrieved ? '#1d4274' : '#f8e499',
+                  backgroundColor: item.retrieved ? "#1d4274" : "#f8e499",
                 }}
               />
-
             </View>
           </TouchableOpacity>
-          
-            <TouchableOpacity onPress={() => handleTrashClick()} style={{ flex: 0.5, marginRight: 20 }}>
-              <Ionicons
-                color="#1d4274"
-                name='trash-outline'
-                size={25}
-                
 
-              ></Ionicons>
-            </TouchableOpacity >
-         
-
+          <TouchableOpacity
+            onPress={() => handleTrashClick()}
+            style={{ flex: 0.5, marginRight: 20 }}
+          >
+            <Ionicons color="#1d4274" name="trash-outline" size={25}></Ionicons>
+          </TouchableOpacity>
         </View>
-      )
-
-
+      );
     } else {
       return (
-        <View style={[styles.item, { backgroundColor , flexDirection:"row", height : 100}]}>
-          <View style={{ flexDirection: 'column', justifyContent:"space-around"}}>
-            <Text style={[styles.itemText, { color: textColor, marginRight: 0, marginLeft: 20}]}>{colis}</Text>
-            <Text style={[styles.itemText, { color: textColor, marginRight: 0, marginLeft: 20, marginBottom:30}]}>{letter}</Text>
+        <View
+          style={[
+            styles.item,
+            { backgroundColor, flexDirection: "row", height: 100 },
+          ]}
+        >
+          <View
+            style={{ flexDirection: "column", justifyContent: "space-around" }}
+          >
+            <Text
+              style={[
+                styles.itemText,
+                { color: textColor, marginRight: 0, marginLeft: 20 },
+              ]}
+            >
+              {colis}
+            </Text>
+            <Text
+              style={[
+                styles.itemText,
+                {
+                  color: textColor,
+                  marginRight: 0,
+                  marginLeft: 20,
+                  marginBottom: 30,
+                },
+              ]}
+            >
+              {letter}
+            </Text>
           </View>
 
-          <View style={{ flexDirection: 'column', marginTop:0, marginBottom:0 }}>
-            <Ionicons
-              color="#1d4274"
-              name='cube-outline'
-              size={40}
-              
-            ></Ionicons>
-            <Ionicons
-                color="#1d4274"
-                name="mail-outline"
-                size={40}
-              
-            ></Ionicons>
+          <View
+            style={{ flexDirection: "column", marginTop: 0, marginBottom: 0 }}
+          >
+            <Ionicons color="#1d4274" name="cube-outline" size={40}></Ionicons>
+            <Ionicons color="#1d4274" name="mail-outline" size={40}></Ionicons>
           </View>
-  
-          <Text style={[styles.itemText, { color: textColor}]}>{time}</Text>
-          <Text style={[styles.itemText, { color: textColor}]}>{date}</Text>
+
+          <Text style={[styles.itemText, { color: textColor }]}>{time}</Text>
+          <Text style={[styles.itemText, { color: textColor }]}>{date}</Text>
 
           <TouchableOpacity onPress={() => toggleCheckbox(item)}>
             <View>
@@ -197,85 +238,78 @@ const HistoriquePage = () => {
                   height: 20,
                   borderRadius: 5,
                   borderWidth: 2,
-                  borderColor: '#1d4274',
+                  borderColor: "#1d4274",
                   // marginRight: 15,
-                  backgroundColor: item.retrieved ? '#1d4274' : '#f8e499',
+                  backgroundColor: item.retrieved ? "#1d4274" : "#f8e499",
                 }}
               />
             </View>
           </TouchableOpacity>
-          
-            <TouchableOpacity onPress={() => handleTrashClick()} style={{  marginRight: 15 }}>
-              <Ionicons
-                color="#1d4274"
-                name='trash-outline'
-                size={25}
-                
 
-              ></Ionicons>
-            </TouchableOpacity >
-          
+          <TouchableOpacity
+            onPress={() => handleTrashClick()}
+            style={{ marginRight: 15 }}
+          >
+            <Ionicons color="#1d4274" name="trash-outline" size={25}></Ionicons>
+          </TouchableOpacity>
         </View>
-      )
+      );
     }
   };
 
-  const modifyData = async (item, flag) => {
+  const modifyData = async (item) => {
+    try {
+      const getAllUrl =
+        "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages";
+      const updateUrl =
+        "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/message";
 
-    const getAllUrl = 'http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages';
-    const updateUrl = 'http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/message';
-  // Fetch the data to find messages with the id
-    fetch(getAllUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        // Filter the  messages with the id
-        const filteredData = data.filter((message) => message.id === item.id);
-        // Modify each specific record as needed
-        filteredData.forEach((record) => {
-          // Update properties of the record
-          record.retrieved = true;
-        });
+      // Fetch the data to find messages with the id
+      const response = await fetch(getAllUrl);
+      const data = await response.json();
 
-        const myItem = filteredData[0];
-        console.log(JSON.stringify(item.id));
-        // Use the PATCH method to update the specific records
-        fetch(updateUrl, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "Access-Control-Allow-Origin": "*",
-          },
-          body: { id: "2" },
-        })
-          .then((response) => {
-            console.log("Server Response:", response.text());
-          })
-          .then((updatedData) => {
-            console.log(
-              "Records updated successfully:",
-              JSON.stringify(updatedData)
-            );
-          })
-          .catch((error) => {
-            console.error("Error updating records:", error);
-          });
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
+      // Filter the messages with the id
+      const filteredData = data.filter((message) => message.id === item.id);
+
+      // Modify each specific record as needed
+      filteredData.forEach((record) => {
+        // Update properties of the record
+        record.retrieved = true;
       });
 
+      const myItem = filteredData[0];
+
+      // Use the PUT method to update the specific record
+      const updateResponse = await fetch(updateUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+        body: JSON.stringify({ id: myItem.id, retrieved: true }),
+      });
+
+      if (updateResponse.ok) {
+        console.log("Record updated successfully");
+      } else {
+        console.error("Error updating record:", updateResponse.statusText);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
-
-
+  // Example usage:
+  // modifyData({ id: 2 });
 
   const toggleCheckbox = (item) => {
-    
     const isSelected = selectedItems.includes(item);
     if (isSelected) {
       modifyData(item, true);
       //item.recupere = true;
-      setSelectedItems(selectedItems.filter((element) => element.id !== item.id));
+      setSelectedItems(
+        selectedItems.filter((element) => element.id !== item.id)
+      );
     } else {
       modifyData(item, false);
       //item.recupere = false;
@@ -283,28 +317,21 @@ const HistoriquePage = () => {
     }
   };
 
-
-
   const renderItem = ({ item }) => {
-    const backgroundColor = item.retrieved ?'#919191' : '#f8e499';
-    const color = item.retrieved ? '#1d4274' : '#1d4274';
+    const backgroundColor = item.retrieved ? "#919191" : "#f8e499";
+    const color = item.retrieved ? "#1d4274" : "#1d4274";
     return (
       <Item
         letter={item.numLetter}
         colis={item.numColis}
         item={item}
-        date = {item.receivedAt.split("T")[0].split("-").reverse().join("/")}
-        time = {item.receivedAt.split("T")[1].slice(0,5)}
+        date={item.receivedAt.split("T")[0].split("-").reverse().join("/")}
+        time={item.receivedAt.split("T")[1].slice(0, 5)}
         backgroundColor={backgroundColor}
         textColor={color}
-
       />
     );
   };
-
-
-
-
 
   const handleDeleteClick = () => {
     setPopupVisible(true);
@@ -326,37 +353,27 @@ const HistoriquePage = () => {
   return (
     <View style={{ flex: 1, backgroundColor: "#1d4274" }}>
       {/* Top Bar */}
-      <View
-        style={styles.topbar}
-      >
-        <Image
-        style={styles.logo}
-        source={require('../assets/logo.png')}
-      />
-         
+      <View style={styles.topbar}>
+        <Image style={styles.logo} source={require("../assets/logo.png")} />
 
-         <TouchableOpacity onPress= {handleUserClick}>
+        <TouchableOpacity onPress={handleUserClick}>
           <Ionicons
             name="person-circle-outline"
             size={50}
-            color = "#1d4274"
+            color="#1d4274"
           ></Ionicons>
         </TouchableOpacity>
       </View>
 
       {/* Menu bar */}
-      <View
-        style={styles.menuBar}
-
-      >
+      <View style={styles.menuBar}>
         <View style={styles.menuContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-            <Text style={styles.menuText} >R&#233;sum&#233;</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+            <Text style={styles.menuText}>R&#233;sum&#233;</Text>
           </TouchableOpacity>
-            
         </View>
         <View style={styles.menuContainerSelected}>
-          <Text style={styles.menuTextSelected} >Historique</Text>
+          <Text style={styles.menuTextSelected}>Historique</Text>
         </View>
         {/*
         <View style={styles.menuContainer}>
@@ -365,30 +382,24 @@ const HistoriquePage = () => {
           </TouchableOpacity>
         </View>*/}
       </View>
-      <View >
-        <Text>
-          {test}
-        </Text>
+      <View>
+        <Text>{test}</Text>
       </View>
       {/* Main Content */}
       <View style={styles.containerBar}>
-        <Text style={[styles.containerBarText, { flex :1 }]} >Type</Text>
-        <Text style={[styles.containerBarText, { flex: 1 }]} >Heure</Text>
-        <Text style={[styles.containerBarText, { flex: 1}]} >Date</Text>
-        <Text style={[styles.containerBarText, { flex: 1.5}]} >R&#233;cup&#233;r&#233;?</Text>
+        <Text style={[styles.containerBarText, { flex: 1 }]}>Type</Text>
+        <Text style={[styles.containerBarText, { flex: 1 }]}>Heure</Text>
+        <Text style={[styles.containerBarText, { flex: 1 }]}>Date</Text>
+        <Text style={[styles.containerBarText, { flex: 1.5 }]}>
+          R&#233;cup&#233;r&#233;?
+        </Text>
       </View>
 
-      <View style={{ flex: 1}}>
-        <View style={{ marginBottom: 20 }} >
+      <View style={{ flex: 1 }}>
+        <View style={{ marginBottom: 20 }}>
           <SafeAreaView style={styles.container}>
-            <FlatList
-              data={jsonData}
-              renderItem={renderItem}
-                
-  
-            />
+            <FlatList data={jsonData} renderItem={renderItem} />
           </SafeAreaView>
-            
         </View>
       </View>
 
@@ -450,7 +461,7 @@ const HistoriquePage = () => {
             }}
           >
             <Text>TODO </Text>
-            <Text>Ce bouton ouvre des paramètres  </Text>
+            <Text>Ce bouton ouvre des paramètres </Text>
           </View>
         </View>
       )}
@@ -465,10 +476,7 @@ const HistoriquePage = () => {
           alignItems: "center",
           paddingHorizontal: 20,
         }}
-      > 
-      
-      </View>
-      
+      ></View>
     </View>
   );
 }
