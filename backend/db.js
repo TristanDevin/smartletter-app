@@ -9,10 +9,11 @@ async function postMessage(message) {
   return prisma.message.create({
     data: {
       id: message.id,
-      letter: message.letter,
-      colis: message.colis,
-      datetime: message.datetime,
-      recupere: message.recupere,
+      senderDevice: message.senderDevice,
+      numLetter: message.numLetter,
+      numColis: message.numColis,
+      receivedAt: message.receivedAt,
+      retrieved: message.retrieved,
     },
   });
 }
@@ -21,7 +22,7 @@ async function putMessage(message) {
   return prisma.message.update({
     where: { id: message.id },
     data: {
-      recupere: message.recupere,
+      retrieved: message.retrieved,
     },
   });
 }

@@ -39,24 +39,36 @@ function hexToAscii(hexString) {
 app.route("/message").post(async (req, res) => {
   try {
   var json = req.body;
-  var data = { id: json.id };
-  data.letter = hexToAscii(json.value.payload);
-  data.colis = hexToAscii(json.value.payload)
+  var payload = json.value.payload;
+  // Convert the payload from hex to ascii
+  var ascii = hexToAscii(payload);
+  // Split the ascii at / to get the different fields
+  var fields = ascii.split("/");
+  var numLetter = fields[0];
+  var numColis = fields[1];
+  var data = {
+    senderDevice: json.id,
+    numLetter: numLetter,
+    numColis: numColis,
+    receivedAt: json.created,
+    retrieved: false,
+  };
 
-  data.datetime = new Date();
-  data.recupere = false;
   const message = await db.postMessage(data);
-    catch (error) {
+  }
+  catch (error) {
     console.error("Error posting message:", error);
-    console.error("message was :", req.body);
+    console.error("Message:", req.body);
     res.status(500).send("Internal Server Error");
   }
-});
+}
+);
+
 
 app.route("/message").put(async (req, res) => {
   try {
     var data = { id: req.body.id };
-    data.recupere = true;
+    data.retrieved = true;
     const message = await db.putMessage(data);
   } catch (error) {
     console.error("Error posting message:", error);
