@@ -33,3 +33,9 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+#expo builds
+android/
+
+# misc
+*.vs
