@@ -20,7 +20,7 @@ import { useNavigation } from "@react-navigation/native";
 const HistoriquePage = () => {
   
   const [popupTrashVisible, setPopupTrashVisible] = useState(false);
-  const [popupUserVisible, setPopupUserVisible] = useState(false);
+  const [popupSettingsVisible, setPopupSettingsVisible] = useState(false);
   const [currentItem, setCurrentItem] = useState(null);
   const [jsonData, setJsonData] = useState(null);
 
@@ -59,12 +59,6 @@ const HistoriquePage = () => {
     setPopupTrashVisible(true);
   };
 
-  const handleUserClick = () => {
-    setPopupUserVisible(true);
-    setTimeout(() => {
-      setPopupUserVisible(false);
-    }, 3000); // Close the popup after 1.5 seconds (1500 milliseconds)
-  };
 
   const handleYesClick = () => {
     setPopupTrashVisible(false);
@@ -75,6 +69,13 @@ const HistoriquePage = () => {
     setPopupTrashVisible(false);
   };
 
+  const handleSettingsClick = () => {
+    setPopupSettingsVisible(true);
+  };
+
+  const handleCloseClick = () => {
+    setPopupSettingsVisible(false);
+  };
 
   const Item = ({
     item,
@@ -388,14 +389,16 @@ const HistoriquePage = () => {
       <View style={styles.topbar}>
         <Image style={styles.logo} source={require("../assets/logo.png")} />
 
-        <TouchableOpacity onPress={handleUserClick}>
+        <TouchableOpacity onPress={handleSettingsClick}>
           <Ionicons
-            name="person-circle-outline"
-            size={50}
+            name="cog-outline"
+            size={45}
             color="#1d4274"
+            style={{marginRight : 10}}
           ></Ionicons>
         </TouchableOpacity>
       </View>
+
 
       {/* Menu bar */}
       <View style={styles.menuBar}>
@@ -425,7 +428,7 @@ const HistoriquePage = () => {
         </Text>
       </View>
 
-      <View style={{ flex: 1 }}>
+      <View >
         <View style={{ marginBottom: 20 }}>
           <SafeAreaView style={styles.container}>
             <FlatList data={jsonData} renderItem={renderItem} />
@@ -433,7 +436,7 @@ const HistoriquePage = () => {
         </View>
       </View>
 
-      {/* Popup */}
+      {/* Popup supprimer*/}
       {popupTrashVisible && (
         <View
           style={{
@@ -473,11 +476,10 @@ const HistoriquePage = () => {
           </View>
         </View>
       )}
-      {/* Popup */}
-      {popupUserVisible && (
+      {/* Popup Reglages*/}
+      {popupSettingsVisible && (
         <View
           style={{
-            flex: 1,
             justifyContent: "center",
             alignItems: "center",
             position: "absolute",
@@ -490,8 +492,8 @@ const HistoriquePage = () => {
         >
           <View
             style={{
-              backgroundColor: "white",
-              padding: 20,
+              backgroundColor: "#f8e499",
+ 
               borderRadius: 8,
               shadowColor: "#000",
               shadowOffset: { width: 2, height: 2 },
@@ -499,9 +501,51 @@ const HistoriquePage = () => {
               shadowRadius: 4,
             }}
           >
-            <Text>TODO </Text>
-            <Text>Ce bouton ouvre des paramètres </Text>
+            <View
+            style={{
+              borderTopLeftRadius: 8,
+              borderTopRightRadius: 8,
+              alignSelf:"stretch",
+              backgroundColor: "#1d4274",
+              height: 50,
+              marginBottom:20
+            }}
+            >
+              <Text style= {[styles.menuText, {marginTop:10}]}>REGLAGES </Text>
+            </View>
+
+            <View
+                style={{
+                  marginVertical:20,
+                  marginHorizontal:20,
+                  alignSelf:"center",
+                }}
+              >
+                
+                  <Text style= {[styles.menuTextSelected]}>TODO </Text>
+                  <Text style= {[styles.menuTextSelected]}>Ajouter les réglages </Text>
+                
+              </View>
+            <TouchableOpacity onPress={handleCloseClick}>
+              <View
+                style={{
+                  borderRadius: 8,
+                  alignSelf:"center",
+                  justifyContent:"center",
+                  backgroundColor: "#1d4274",
+                  height: 40,
+                  marginVertical:20,
+                  paddingHorizontal:10
+                }}
+              >
+                
+                  <Text style= {[styles.menuText]}>Fermer </Text>
+                
+                
+              </View>
+            </TouchableOpacity>
           </View>
+          
         </View>
       )}
 
@@ -550,7 +594,7 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center",
     alignSelf:"center",
-    flex: 1,
+
     fontSize: 25,
 
 
@@ -562,7 +606,7 @@ menuTextSelected: {
     alignSelf:"center",
     color: "#1d4274",
     textAlign: "center",
-    flex: 1,
+
     fontSize: 25,
 
 
@@ -579,8 +623,6 @@ menuContainerSelected: {
   borderBottomLeftRadius: 20,
   borderBottomRightRadius: 20,
   paddingHorizontal: 20,
-  paddingTop: Platform.OS === 'ios' ? 10 : 5 ,
-  
   shadowColor: "#000",
   shadowOffset: { width: 2, height: 2 },
   shadowOpacity: 0.5,
@@ -600,7 +642,6 @@ menuContainer: {
   borderBottomLeftRadius: 30,
   borderBottomRightRadius: 30,
   paddingHorizontal: 20,
-  paddingTop: Platform.OS === 'ios' ? 10 : 5 ,
   marginTop: 10,
   position: "relative", // Ensure the button is positioned relative to this parent
 },
