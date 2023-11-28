@@ -34,7 +34,12 @@ const HistoriquePage = () => {
           "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages"
         );
         const data = await response.json();
-        const sortedData = data.sort((a, b) => b.id - a.id);
+        data.forEach((record) => {
+          const fullDate = (new Date(record.receivedAt));
+          fullDate.setHours(fullDate.getHours() + 1);
+          record.receivedAt = fullDate.toISOString();
+        });
+        const sortedData = data.sort((a, b) => b.receivedAt - a.receivedAt);
         setJsonData(sortedData);
       } catch (error) {
         window.alert(error);
@@ -250,10 +255,14 @@ const HistoriquePage = () => {
       const response = await fetch(getAllUrl);
       const data = await response.json();
       //getTotal(data);
-
+      data.forEach((record) => {
+        const fullDate = (new Date(record.receivedAt));
+        fullDate.setHours(fullDate.getHours() + 1);
+        record.receivedAt = fullDate.toISOString();
+      });
       // Modify each specific record as needed
-
-      const sortedData = data.filter(element => element.id !== item.id);
+      const deletedData = data.filter(element => element.id !== item.id);
+      const sortedData = deletedData.sort((a, b) => new Date(b.receivedAt) - new Date(a.receivedAt));
       setJsonData(sortedData);
 
 
@@ -302,9 +311,11 @@ const HistoriquePage = () => {
         if (record.id === item.id){
           record.retrieved = flag;
         };
-        
+        const fullDate = (new Date(record.receivedAt));
+        fullDate.setHours(fullDate.getHours() + 1);
+        record.receivedAt = fullDate.toISOString();
       });
-      const sortedData = data.sort((a, b) => b.id - a.id);
+      const sortedData = data.sort((a, b) => new Date(b.receivedAt) - new Date(a.receivedAt));
       setJsonData(sortedData);
 
 
@@ -349,14 +360,16 @@ const HistoriquePage = () => {
   const renderItem = ({ item }) => {
     const backgroundColor = item.retrieved ? "#919191" : "#f8e499";
     const color = item.retrieved ? "#1d4274" : "#1d4274";
+    var fullDate = (new Date(item.receivedAt));
+    const stringTime = fullDate.toISOString().slice(11, 16);
+    const stringDate = fullDate.toISOString().split("T")[0].split("-").reverse().join("/");
     return (
       <Item
         letter={item.numLetter}
         colis={item.numColis}
         item={item}
-        time={[parseInt(item.receivedAt.split("T")[1].split(":")[0]) === 23 ? "00" : parseInt(item.receivedAt.split("T")[1].split(":")[0]) + 1,":", item.receivedAt.split("T")[1].split(":")[1],]}
-        date={parseInt(item.receivedAt.split("T")[1].split(":")[0]) === 23 ? 
-          [parseInt(item.receivedAt.split("T")[0].split("-")[2]) + 1 , "/", item.receivedAt.split("T")[0].split("-")[1], "/", item.receivedAt.split("T")[0].split("-")[0]]  :  item.receivedAt.split("T")[0].split("-").reverse().join("/")}
+        time={stringTime}
+        date={stringDate}
         backgroundColor={backgroundColor}
         textColor={color}
       />
