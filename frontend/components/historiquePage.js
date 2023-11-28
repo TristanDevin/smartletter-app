@@ -21,7 +21,7 @@ const HistoriquePage = () => {
   
   const [popupTrashVisible, setPopupTrashVisible] = useState(false);
   const [popupUserVisible, setPopupUserVisible] = useState(false);
-  const [popupVisible, setPopupVisible] = useState(false);
+  const [currentItem, setCurrentItem] = useState(null);
   const [jsonData, setJsonData] = useState(null);
 
   const navigation = useNavigation();
@@ -39,7 +39,7 @@ const HistoriquePage = () => {
           fullDate.setHours(fullDate.getHours() + 1);
           record.receivedAt = fullDate.toISOString();
         });
-        const sortedData = data.sort((a, b) => b.receivedAt - a.receivedAt);
+        const sortedData = data.sort((a, b) => new Date(b.receivedAt) -new Date(a.receivedAt));
         setJsonData(sortedData);
       } catch (error) {
         window.alert(error);
@@ -49,12 +49,14 @@ const HistoriquePage = () => {
     };
 
 
+
     
     fetchData();
   }, []); // Empty dependency array ensures that this effect runs once on mount
 
   const handleTrashClick = (item) => {
-    deleteData(item);
+    setCurrentItem(item);
+    setPopupTrashVisible(true);
   };
 
   const handleUserClick = () => {
@@ -63,6 +65,16 @@ const HistoriquePage = () => {
       setPopupUserVisible(false);
     }, 3000); // Close the popup after 1.5 seconds (1500 milliseconds)
   };
+
+  const handleYesClick = () => {
+    setPopupTrashVisible(false);
+    deleteData(currentItem);
+  };
+
+  const handleNoClick = () => {
+    setPopupTrashVisible(false);
+  };
+
 
   const Item = ({
     item,
@@ -287,9 +299,6 @@ const HistoriquePage = () => {
     }
   };
 
-
-
-
   const modifyData = async (item, flag) => {
     try {
       const getAllUrl =
@@ -340,11 +349,6 @@ const HistoriquePage = () => {
     }
   };
 
-
-
-  // Example usage:
-  // modifyData({ id: 2 });
-
   const toggleCheckbox = (item) => {
 
     if (item.retrieved ) { 
@@ -376,22 +380,7 @@ const HistoriquePage = () => {
     );
   };
 
-  const handleDeleteClick = () => {
-    setPopupVisible(true);
-  };
-
-  const handleYesClick = (item) => {
-    setPopupVisible(false);
-    /*
-    const index = DATA.indexOf(item);
-    DATA.splice(index, 1);
-    console.log(index);*/
-  };
-
-  const handleNoClick = (item) => {
-    setPopupVisible(false);
-    //DATA.push(item);
-  };
+ 
 
   return (
     <View style={{ flex: 1, backgroundColor: "#1d4274" }}>
@@ -470,8 +459,17 @@ const HistoriquePage = () => {
               shadowRadius: 4,
             }}
           >
-            <Text>TODO </Text>
-            <Text>Ce bouton permet de supprimer le message </Text>
+            <Text>Voulez-vous vraiment supprimer l'élément? </Text>
+            <Text style = {{alignSelf:"center", marginBottom:10}}>(Cette action est irréversible)</Text>
+            <View style = {{flexDirection:"row", justifyContent:"space-around"}}>
+              <TouchableOpacity onPress={ handleYesClick}>
+              <Text>Oui</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={ handleNoClick}>
+              <Text>Non</Text>
+              </TouchableOpacity>
+            </View>
+            
           </View>
         </View>
       )}

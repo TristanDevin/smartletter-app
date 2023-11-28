@@ -84,9 +84,14 @@ export default function IndexPage() {
         if (record.id === item.id){
           record.retrieved = true;
         };
+        const fullDate = (new Date(record.receivedAt));
+        fullDate.setHours(fullDate.getHours() + 1);
+        record.receivedAt = fullDate.toISOString();
         
       });
-      const sortedData = data.sort((a, b) => b.id - a.id);
+
+
+      const sortedData = data.sort((a, b) => b.receivedAt - a.receivedAt);
       setJsonData(sortedData);
 
 
