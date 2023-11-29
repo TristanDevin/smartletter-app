@@ -47,7 +47,7 @@ app.route("/message").post(async (req, res) => {
     var numColis = parseInt(fields[1]);
 
     var data = {
-      senderDevice: json.id,
+      senderDevice: json.metadata.network.lora.devEUi,
       numLetter: numLetter,
       numColis: numColis,
       receivedAt: json.created,
