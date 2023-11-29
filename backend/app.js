@@ -45,16 +45,15 @@ app.route("/message").post(async (req, res) => {
     var fields = ascii.split("/");
     var numLetter = parseInt(fields[0]);
     var numColis = parseInt(fields[1]);
-    console.log(json)
-    console.log(json.metadata.network.lora.devEUi)
+    // Get sender id from  stream id, split at : and take the last part
+    var senderId = json.streamId.split(":")[4];
     var data = {
-      senderDevice: json.metadata.network.lora.devEUi,
+      senderDevice: senderId,
       numLetter: numLetter,
       numColis: numColis,
       receivedAt: json.created,
       retrieved: false,
     };
-    console.log(data);
     const message = await db.postMessage(data);
     res.status(200).send("OK");
   } catch (error) {
