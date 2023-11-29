@@ -45,7 +45,8 @@ app.route("/message").post(async (req, res) => {
     var fields = ascii.split("/");
     var numLetter = parseInt(fields[0]);
     var numColis = parseInt(fields[1]);
-
+    console.log(json)
+    console.log(json.metadata.network.lora.devEUi)
     var data = {
       senderDevice: json.metadata.network.lora.devEUi,
       numLetter: numLetter,
@@ -53,6 +54,7 @@ app.route("/message").post(async (req, res) => {
       receivedAt: json.created,
       retrieved: false,
     };
+    console.log(data);
     const message = await db.postMessage(data);
     res.status(200).send("OK");
   } catch (error) {
