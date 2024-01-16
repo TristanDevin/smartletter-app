@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "SmartLetter",
-    "slug": "smartletter",
+    "name": "AwesomeProject",
+    "slug": "AwesomeProject",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -30,9 +30,9 @@
     },
     "extra": {
       "eas": {
-        "projectId": "b9602913-58d9-4110-b2ad-0f8736019c76"
+        "projectId": "964c36fe-d1ef-4318-afa6-65da993c8d28"
       }
     },
-    "owner": "tristan_devin"
+    "owner": "rosaliebdm"
   }
 }
