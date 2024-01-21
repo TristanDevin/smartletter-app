@@ -62,13 +62,12 @@ app.route("/message").post(async (req, res) => {
 
 app.route("/message/ttn").post(async (req, res) => {
   try {
-    console.log("req", req);
     var json = req.body;
-    console.log("json", json);
-    var payload = Message.uplink_message.frm_payload;
+    var payload = json.uplink_message.frm_payload;
     console.log("payload", payload);
     // Convert the payload from base64 to ascii
     var ascii = base64ToAscii(payload);
+    console.log("ascii", ascii);
     // Split the ascii at / to get the different fields and convert them to numbers
     var fields = ascii.split("/");
     var numLetter = parseInt(fields[0]);
