@@ -65,9 +65,11 @@ app.route("/message").post(async (req, res) => {
 
 app.route("/message/ttn").post(async (req, res) => {
   try {
+    console.log("req", req);
     var json = req.body;
-    var payload = Message.uplink_message.frm_payload;
     console.log("json", json);
+    var payload = Message.uplink_message.frm_payload;*
+    console.log("payload", payload);
     // Convert the payload from hex to ascii
     var ascii = hexToAscii(payload);
     // Split the ascii at / to get the different fields and convert them to numbers
@@ -90,7 +92,7 @@ app.route("/message/ttn").post(async (req, res) => {
     console.error("Message:", req.body);
     res.status(500).send("Internal Server Error");
   }
-}
+});
 
 
 
