@@ -73,12 +73,12 @@ app.route("/message/ttn").post(async (req, res) => {
     var numLetter = parseInt(fields[0]);
     var numColis = parseInt(fields[1]);
     // Get sender id from  stream id, split at : and take the last part
-    var senderId = json.Message.end_device_ids.dev_eui;
+    var senderId = json.end_device_ids.dev_eui;
     var data = {
       senderDevice: senderId,
       numLetter: numLetter,
       numColis: numColis,
-      receivedAt: json.Message.received_at, 
+      receivedAt: json.received_at, 
       retrieved: false,
     };
     const message = await db.postMessage(data);
