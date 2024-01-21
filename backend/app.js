@@ -68,7 +68,7 @@ app.route("/message/ttn").post(async (req, res) => {
     console.log("req", req);
     var json = req.body;
     console.log("json", json);
-    var payload = Message.uplink_message.frm_payload;*
+    var payload = Message.uplink_message.frm_payload;
     console.log("payload", payload);
     // Convert the payload from hex to ascii
     var ascii = hexToAscii(payload);
