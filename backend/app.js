@@ -63,6 +63,38 @@ app.route("/message").post(async (req, res) => {
   }
 });
 
+app.route("/message/ttn").post(async (req, res) => {
+  try {
+    var json = req.body;
+    var payload = Message.uplink_message.frm_payload;
+    console.log("json", json);
+    // Convert the payload from hex to ascii
+    var ascii = hexToAscii(payload);
+    // Split the ascii at / to get the different fields and convert them to numbers
+    var fields = ascii.split("/");
+    var numLetter = parseInt(fields[0]);
+    var numColis = parseInt(fields[1]);
+    // Get sender id from  stream id, split at : and take the last part
+    var senderId = json.Message.end_device_ids.dev_eui;
+    var data = {
+      senderDevice: senderId,
+      numLetter: numLetter,
+      numColis: numColis,
+      receivedAt: json.Message.received_at, 
+      retrieved: false,
+    };
+    const message = await db.postMessage(data);
+    res.status(200).send("OK");
+  } catch (error) {
+    console.error("Error posting message:", error);
+    console.error("Message:", req.body);
+    res.status(500).send("Internal Server Error");
+  }
+}
+
+
+
+
 app.route("/message").put(async (req, res) => {
   try {
     var data = { id: req.body.id, retrieved: req.body.retrieved };

@@ -10,9 +10,9 @@ import {
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo package
-import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
+import PushNotification from "react-native-push-notification";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 
@@ -35,15 +35,24 @@ const HistoriquePage = () => {
         );
         const data = await response.json();
         data.forEach((record) => {
-          const fullDate = (new Date(record.receivedAt));
+          const fullDate = new Date(record.receivedAt);
           fullDate.setHours(fullDate.getHours() + 1);
           record.receivedAt = fullDate.toISOString();
         });
-        const sortedData = data.sort((a, b) => new Date(b.receivedAt) -new Date(a.receivedAt));
+        const sortedData = data.sort(
+          (a, b) => new Date(b.receivedAt) - new Date(a.receivedAt)
+        );
         setJsonData(sortedData);
-      } catch (error) {
-        window.alert(error);
+        // Count the number of new messages
+        const newMessages = sortedData.filter((item) => !item.retrieved);
+        setNewMessagesCount(newMessages.length);
 
+        // Save the total number of messages to local storage
+        await AsyncStorage.setItem(
+          "totalMessages",
+          sortedData.length.toString()
+        );
+      } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
@@ -52,10 +61,28 @@ const HistoriquePage = () => {
 
     
     fetchData();
-  }, []); // Empty dependency array ensures that this effect runs once on mount
+  }, [jsonData]); // Empty dependency array ensures that this effect runs once on mount
+
+  useEffect(() => {
+    // Periodically check for new messages and send a notification
+    const notificationInterval = setInterval(() => {
+      // Fetch data to check for new messages
+      fetchData();
+
+      // Send a notification if there are new messages
+      if (newMessagesCount > 0) {
+        PushNotification.localNotification({
+          title: "New Message",
+          message: `You have ${newMessagesCount} new message(s)!`,
+        });
+      }
+    }, 300000); // Check every 5 minutes (adjust as needed)
+
+    return () => clearInterval(notificationInterval);
+  }, [newMessagesCount]);
 
   const handleTrashClick = (item) => {
-    setCurrentItem(item);
+    setCurrentItem(item); 
     setPopupTrashVisible(true);
   };
 

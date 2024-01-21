@@ -28,6 +28,7 @@
     "brew": "^0.0.8",
     "docker-compose": "^0.24.3",
     "expo": "~49.0.15",
+    "expo-constants": "^14.4.2",
     "expo-font": "~11.4.0",
     "expo-splash-screen": "~0.20.5",
     "expo-status-bar": "~1.6.0",
@@ -49,9 +50,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@react-native-async-storage/async-storage": "^1.21.0",
     "metro-config": "^0.80.1",
     "react-native": "^0.72.7",
-    "react-native-eject": "^0.2.0"
+    "react-native-eject": "^0.2.0",
+    "react-native-push-notification": "^8.1.1",
+    "sharp-cli": "^4.2.0"
   },
   "private": true
 }

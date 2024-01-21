@@ -20,10 +20,6 @@ export default function IndexPage() {
 
 
 
-
-
-
-
   const handleButtonClick = () => {
     jsonData.forEach((record) => {
       // Update properties of the record

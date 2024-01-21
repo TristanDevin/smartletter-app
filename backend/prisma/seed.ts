@@ -6,9 +6,9 @@ const prisma = new PrismaClient();
 const messages = [
     {
         senderDevice: 'A',
-        numColis: 1,
+        numColis: 2,
         numLetter: 1,
-        receivedAt: '2021-05-04T14:30:00.000Z',
+        receivedAt: '2024-01-11T08:14:11.000Z',
         retrieved: false
     },
     {
