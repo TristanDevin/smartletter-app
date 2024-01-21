@@ -23,14 +23,11 @@ function hexToAscii(hexString) {
   return asciiString;
 }
 
-function hexToAscii(hexString) {
+function base64ToAscii(base64String) {
   let asciiString = "";
 
-  for (let i = 0; i < hexString.length; i += 2) {
-    let hex = hexString.substr(i, 2);
-    let decimal = parseInt(hex, 16);
-    asciiString += String.fromCharCode(decimal);
-  }
+  let buffer = Buffer.from(base64String, "base64");
+  asciiString = buffer.toString("ascii");
 
   return asciiString;
 }
@@ -70,8 +67,8 @@ app.route("/message/ttn").post(async (req, res) => {
     console.log("json", json);
     var payload = Message.uplink_message.frm_payload;
     console.log("payload", payload);
-    // Convert the payload from hex to ascii
-    var ascii = hexToAscii(payload);
+    // Convert the payload from base64 to ascii
+    var ascii = base64ToAscii(payload);
     // Split the ascii at / to get the different fields and convert them to numbers
     var fields = ascii.split("/");
     var numLetter = parseInt(fields[0]);
