@@ -114,20 +114,9 @@ const HistoriquePage = () => {
             { backgroundColor , flexDirection: "row", height: 80 },
           ]}
         >
-            <Text
-              style={[
-                styles.itemText,
-                {
-                  color: textColor,
-                  marginRight: 0,
-                  marginLeft: 20,
-                  marginBottom: 20,
-                },
-              ]}
-            >
-              {colis}
-            </Text>
-          <Ionicons color="#1d4274" name="cube-outline" size={40}></Ionicons>
+          <Ionicons color="#1d4274" name="cube-outline" size={40} style={[
+            { marginLeft:20 },
+          ]}></Ionicons>
          
           <Text style={[styles.itemText, { color: textColor }]}>{time}</Text>
           <Text style={[styles.itemText, { color: textColor }]}>{date}</Text>
@@ -175,21 +164,11 @@ const HistoriquePage = () => {
             { backgroundColor , flexDirection: "row", height: 80 },
           ]}
         >
-            <Text
-              style={[
-                styles.itemText,
-                {
-                  color: textColor,
-                  marginRight: 0,
-                  marginLeft: 20,
-                  marginBottom: 20,
-                },
-              ]}
-            >
-              {letter}
-            </Text>
-          <Ionicons color="#1d4274" name="mail-outline" size={40}></Ionicons>
-         
+            
+          <Ionicons color="#1d4274" name="mail-outline" size={40} style={[
+            { marginLeft:20 },
+          ]}></Ionicons>
+          
           <Text style={[styles.itemText, { color: textColor }]}>{time}</Text>
           <Text style={[styles.itemText, { color: textColor }]}>{date}</Text>
 
@@ -238,34 +217,18 @@ const HistoriquePage = () => {
           <View
             style={{ flexDirection: "column", justifyContent: "space-around" }}
           >
-            <Text
-              style={[
-                styles.itemText,
-                { color: textColor, marginRight: 0, marginLeft: 20 },
-              ]}
-            >
-              {colis}
-            </Text>
-            <Text
-              style={[
-                styles.itemText,
-                {
-                  color: textColor,
-                  marginRight: 0,
-                  marginLeft: 20,
-                  marginBottom: 30,
-                },
-              ]}
-            >
-              {letter}
-            </Text>
+          
           </View>
 
           <View
             style={{ flexDirection: "column", marginTop: 0, marginBottom: 0 }}
           >
-            <Ionicons color="#1d4274" name="cube-outline" size={40}></Ionicons>
-            <Ionicons color="#1d4274" name="mail-outline" size={40}></Ionicons>
+            <Ionicons color="#1d4274" name="cube-outline" size={40} style={[
+            { marginLeft:20 },
+          ]}></Ionicons>
+            <Ionicons color="#1d4274" name="mail-outline" size={40} style={[
+            { marginLeft:20 },
+          ]}></Ionicons>
           </View>
 
           <Text style={[styles.itemText, { color: textColor }]}>{time}</Text>
