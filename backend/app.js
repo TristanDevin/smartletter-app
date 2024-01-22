@@ -29,14 +29,18 @@ function hexToAscii(hexString) {
 
 function sendPushNotification(expoPushToken, message) {
   const expo = new Expo();
-  const chunks = expo.chunkPushNotifications([
+  const messages = [
     {
       to: expoPushToken,
       sound: "default",
       body: message,
-    }
-  ]);
+      data: { withSome: "data" },
+    },
+  ];
+  expo.sendPushNotificationsAsync(messages);
 }
+
+
 
 function base64ToAscii(base64String) {
   let asciiString = "";
