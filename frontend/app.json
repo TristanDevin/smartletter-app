@@ -14,17 +14,29 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.SmartLetter"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      },
-      "package": "com.anonymous.SmartLetter"
-    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0",
+            "usesCleartextTraffic": true,
+            "permissions": [
+              "READ_EXTERNAL_STORAGE",
+              "WRITE_EXTERNAL_STORAGE",
+              "RECEIVE_BOOT_COMPLETED",
+              "VIBRATE",
+              "SCHEDULE_EXACT_ALARM"
+            ]
+          },
+          "ios": {
+            "deploymentTarget": "13.4"
+          }
+        }
+      ]
+    ],
     "web": {
       "favicon": "./assets/favicon.png"
     },
@@ -33,6 +45,9 @@
         "projectId": "8a5a3f8a-6029-4c94-bac9-4382b36c549e"
       }
     },
-    "owner": "tristan_devin"
+    "owner": "tristan_devin",
+    "android": {
+      "package": "com.tristan_devin.smartletter"
+    }
   }
 }

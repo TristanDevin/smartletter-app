@@ -31,7 +31,13 @@ async function registerForPushNotificationsAsync() {
 
   return token;
 }
-
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 
 export default function App() {
 
@@ -59,13 +65,15 @@ export default function App() {
     };
 
     fetchToken();
+
+ notificationListener.current = Notifications.addNotificationReceivedListener(
+   (notification) => {
+     setNotification(notification);
+   }
+ );
+
   }, []);
 
-  Notifications.setNotificationHandler({
-    handleNotification: async () => ({
-      shouldShowAlert: true,
-    }),
-  });
 
   return (
     <NavigationContainer>
