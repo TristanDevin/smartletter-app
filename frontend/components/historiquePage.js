@@ -8,11 +8,10 @@ import {
   FlatList,
   Platform,
 } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo package
 import { useNavigation } from "@react-navigation/native";
-import PushNotification from "react-native-push-notification";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+
 
 
 
@@ -52,27 +51,11 @@ const HistoriquePage = () => {
     fetchData();
   }, [jsonData]); // Empty dependency array ensures that this effect runs once on mount
 
-  useEffect(() => {
-    // Periodically check for new messages and send a notification
-    const notificationInterval = setInterval(() => {
-      // Fetch data to check for new messages
-      fetchData();
-
-      // Send a notification if there are new messages
-      if (newMessagesCount > 0) {
-        PushNotification.localNotification({
-          title: "New Message",
-          message: `You have ${newMessagesCount} new message(s)!`,
-        });
-      }
-    }, 300000); // Check every 5 minutes (adjust as needed)
-
-    return () => clearInterval(notificationInterval);
-  }, [newMessagesCount]);
 
   const handleTrashClick = (item) => {
     //setCurrentItem(item);
     //setPopupTrashVisible(true);
+    console.log("delete ", item.id)
     deleteData(item);
   };
 

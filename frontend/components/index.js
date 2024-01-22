@@ -1,9 +1,8 @@
 import React, { useState, useEffect} from "react";
 import { View, Text, Image, StyleSheet, Platform } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo package
 
-import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 
 
