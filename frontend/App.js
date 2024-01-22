@@ -39,7 +39,7 @@ export default function App() {
     const fetchToken = async () => {
       try {
         const token = await registerForPushNotificationsAsync();
-
+        console.log("Token:", token);
         // Send the token to the server
         await fetch(
           "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/token",
