@@ -36,6 +36,7 @@ function sendPushNotification(expoPushToken, message) {
       body: message,
     }
   ]);
+}
 
 function base64ToAscii(base64String) {
   let asciiString = "";
