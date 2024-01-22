@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AwesomeProject",
-    "slug": "AwesomeProject",
+    "name": "SmartLetter",
+    "slug": "smartletter",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,23 +16,23 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.AwesomeProject"
+      "bundleIdentifier": "com.anonymous.SmartLetter"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.anonymous.AwesomeProject"
+      "package": "com.anonymous.SmartLetter"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "964c36fe-d1ef-4318-afa6-65da993c8d28"
+        "projectId": "8a5a3f8a-6029-4c94-bac9-4382b36c549e"
       }
     },
-    "owner": "rosaliebdm"
+    "owner": "tristan_devin"
   }
 }
