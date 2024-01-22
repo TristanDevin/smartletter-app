@@ -80,6 +80,8 @@ app.route("/message").post(async (req, res) => {
 
     // Send push notification
     if (token) {
+      console.log("Sending push notification to", token);
+  
       sendPushNotification(token, "Vous avez reçu un nouveau message !");
     }
 
