@@ -115,6 +115,13 @@ app.route("/message/ttn").post(async (req, res) => {
       receivedAt: json.received_at, 
       retrieved: false,
     };
+
+     if (token) {
+       console.log("Sending push notification to", token);
+
+       sendPushNotification(token, "Vous avez reçu un nouveau message !");
+     }
+     
     const message = await db.postMessage(data);
     res.status(200).send("OK");
   } catch (error) {
