@@ -1,9 +1,8 @@
 import React, { useState, useEffect} from "react";
 import { View, Text, Image, StyleSheet, Platform } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Import Ionicons from Expo package
 
-import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 
 
@@ -21,6 +20,7 @@ export default function IndexPage() {
 
 
   const handleButtonClick = () => {
+    /*
     jsonData.forEach((record) => {
       // Update properties of the record
       if (record.retrieved === false ){
@@ -30,12 +30,21 @@ export default function IndexPage() {
     });
     //fetchData();
     getTotal(jsonData);
+    */
+    deleteAllData();
+
+    
    };
 
 
   const handleSettingsClick = () => {
     setpopupSettingsVisible(true);
   };
+
+  const handleRefresh = () => {
+    fetchData();
+  };
+
 
   const handleCloseClick = () => {
     setpopupSettingsVisible(false);
@@ -62,6 +71,46 @@ export default function IndexPage() {
     setTotalColis(sumC);
   }
   
+  const deleteAllData = async () => {
+    try {
+      const getAllUrl =
+        "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages";
+      const updateUrl =
+        "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/message";
+
+      // Fetch the data to find messages with the id
+      const response = await fetch(getAllUrl);
+      const data = await response.json();
+
+      //delete all
+      data.forEach(async (record) => {
+        const updateResponse = await fetch(updateUrl, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            "Access-Control-Allow-Origin": "*",
+          },
+          body: JSON.stringify({ id: record.id }),
+        });
+  
+        if (updateResponse.ok) {
+          console.log("Record updated successfully");
+          //console.log(updateResponse);
+        } else {
+          console.error("Error updating record:", updateResponse.statusText);
+        }
+      });
+      
+      //delete the stored data
+      setJsonData([]);
+      
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
+
+
+
   const modifyDataTrue = async (item) => {
     try {
       const getAllUrl =
@@ -112,13 +161,15 @@ export default function IndexPage() {
       console.error("Error:", error);
     }
   };
+
+
   const fetchData = async () => {
     try {
       // Using fetch API
       const response = await fetch('http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages');
 
       const data = await response.json();
-      const sortedData = data.sort((a, b) => b.id - a.id);
+      const sortedData = data.sort((a, b) => b.receivedAt - a.receivedAt);
       setJsonData(sortedData);
       getTotal(sortedData);
 
@@ -152,14 +203,14 @@ export default function IndexPage() {
       >
         <Image
           style={styles.logo}
-          source={require('../assets/logo.png')}
+          source={require('../assets/logo_bleu.png')}
           />
-        <TouchableOpacity onPress= {handleSettingsClick}>
+        <TouchableOpacity onPress= {handleRefresh}>
           <Ionicons
-            name="cog-outline"
-            size={45}
+            name="refresh-outline"
+            size={40}
             color="#1d4274"
-            style={{marginRight : 10}}
+            style={{marginRight : 10, marginTop: 10 }}
           ></Ionicons>
         </TouchableOpacity>
          
@@ -372,7 +423,7 @@ export default function IndexPage() {
 const styles = StyleSheet.create({
     topbar: {
         height: 100,
-        paddingTop:50,
+        paddingTop:40,
         flexDirection :"row",
         backgroundColor: "#f8e499",
         justifyContent: "space-between",
@@ -483,10 +534,13 @@ const styles = StyleSheet.create({
     },
 
 
-      logo: {
-        width: 120,
-        height: 50,
-      },
+      
+    logo: {
+      width: 120,
+      height: 50,
+      marginBottom: 20,
+      marginLeft: 10
+    },
       
     buttonText: {
       fontFamily : Platform.OS === 'ios' ? "Futura" : "sans-serif-condensed",
