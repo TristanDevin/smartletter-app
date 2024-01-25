@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   NavigationContainer,
 } from "@react-navigation/native";
@@ -41,6 +41,11 @@ Notifications.setNotificationHandler({
 
 export default function App() {
 
+   const [expoPushToken, setExpoPushToken] = useState("");
+   const [notification, setNotification] = useState(false);
+   const notificationListener = useRef();
+   const responseListener = useRef();
+
   useEffect(() => {
     const fetchToken = async () => {
       try {
@@ -66,11 +71,15 @@ export default function App() {
 
     fetchToken();
 
- notificationListener.current = Notifications.addNotificationReceivedListener(
-   (notification) => {
-     setNotification(notification);
-   }
- );
+     notificationListener.current =
+       Notifications.addNotificationReceivedListener((notification) => {
+         setNotification(notification);
+       });
+
+       responseListener.current =
+         Notifications.addNotificationResponseReceivedListener((response) => {
+           console.log(response);
+         });
 
   }, []);
 
