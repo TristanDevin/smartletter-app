@@ -33,8 +33,8 @@ function sendPushNotification(expoPushToken, message) {
     {
       to: expoPushToken,
       sound: "default",
-      body: message,
-      data: { withSome: "data" },
+      title: "SmartLetter",
+      body: "Vous avez du nouveau dans votre boîte aux lettres !"
     },
   ];
   expo.sendPushNotificationsAsync(messages);
