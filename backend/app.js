@@ -33,14 +33,13 @@ function sendPushNotification(expoPushToken, message) {
     {
       to: expoPushToken,
       sound: "default",
-      title: "SmartLetter",
-      body: "Vous avez du nouveau dans votre boîte aux lettres !"
+      title: "Smart Letter",
+      body: "Vous avez du nouveau dans votre boîte aux lettres !",
+      data: { withSome: "data" },
     },
   ];
   expo.sendPushNotificationsAsync(messages);
 }
-
-
 
 function base64ToAscii(base64String) {
   let asciiString = "";
@@ -59,8 +58,7 @@ app.route("/token").post(async (req, res) => {
     console.error("Error posting token:", error);
     res.status(500).send("Internal Server Error");
   }
-}
-);
+});
 
 app.route("/message").post(async (req, res) => {
   try {
@@ -84,11 +82,10 @@ app.route("/message").post(async (req, res) => {
     const message = await db.postMessage(data);
 
     // Send push notification
-    if (token) {
       console.log("Sending push notification to", token);
-  
+
       sendPushNotification(token, "Vous avez reçu un nouveau message !");
-    }
+    
 
     res.status(200).send("OK");
   } catch (error) {
@@ -116,16 +113,15 @@ app.route("/message/ttn").post(async (req, res) => {
       senderDevice: senderId,
       numLetter: numLetter,
       numColis: numColis,
-      receivedAt: json.received_at, 
+      receivedAt: json.received_at,
       retrieved: false,
     };
 
-     if (token) {
-       console.log("Sending push notification to", token);
+      console.log("Sending push notification to", token);
 
-       sendPushNotification(token, "Vous avez reçu un nouveau message !");
-     }
-     
+      sendPushNotification(token, "Vous avez reçu un nouveau message !");
+    
+
     const message = await db.postMessage(data);
     res.status(200).send("OK");
   } catch (error) {
@@ -134,9 +130,6 @@ app.route("/message/ttn").post(async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
-
-
 
 app.route("/message").put(async (req, res) => {
   try {
@@ -158,8 +151,7 @@ app.route("/message").get(async (req, res) => {
     console.error("Error fetching message:", error);
     res.status(500).send("Internal Server Error");
   }
-}
-);
+});
 
 app.route("/message").delete(async (req, res) => {
   try {
@@ -170,8 +162,7 @@ app.route("/message").delete(async (req, res) => {
     console.error("Error deleting messages:", error);
     res.status(500).send("Internal Server Error");
   }
-}
-);
+});
 
 app.route("/messages").get(async (req, res) => {
   try {
