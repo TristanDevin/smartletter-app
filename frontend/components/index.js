@@ -233,6 +233,7 @@ export default function IndexPage() {
 const styles = StyleSheet.create({
     topbar: {
         paddingTop: Platform.OS === 'ios' ? 40:10,
+        marginTop: Platform.OS === 'ios' ? 0:30,
         height: Platform.OS === 'ios' ? 100:70,
         flexDirection :"row",
         backgroundColor: "#f8e499",
