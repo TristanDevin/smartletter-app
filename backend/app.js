@@ -82,9 +82,11 @@ app.route("/message").post(async (req, res) => {
     const message = await db.postMessage(data);
 
     // Send push notification
+    if (token) {
       console.log("Sending push notification to", token);
 
       sendPushNotification(token, "Vous avez reçu un nouveau message !");
+    }
     
 
     res.status(200).send("OK");
@@ -117,10 +119,13 @@ app.route("/message/ttn").post(async (req, res) => {
       retrieved: false,
     };
 
+    if (token) {
+
       console.log("Sending push notification to", token);
 
       sendPushNotification(token, "Vous avez reçu un nouveau message !");
     
+    }
 
     const message = await db.postMessage(data);
     res.status(200).send("OK");
