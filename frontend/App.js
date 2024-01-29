@@ -3,10 +3,9 @@ import {
   NavigationContainer,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { StatusBar } from 'expo-status-bar';
 import IndexPage from "./components/index";
 import HistoriquePage from "./components/historiquePage";
-import TableauDeBordPage from "./components/tableauDeBordPage";
 
 import * as Notifications from "expo-notifications";
 
@@ -39,12 +38,16 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export default function App() {
 
+
+
+export default function App() {
+  
    const [expoPushToken, setExpoPushToken] = useState("");
    const [notification, setNotification] = useState(false);
    const notificationListener = useRef();
    const responseListener = useRef();
+
 
   useEffect(() => {
     const fetchToken = async () => {
@@ -86,6 +89,7 @@ export default function App() {
 
   return (
     <NavigationContainer>
+      <StatusBar  barStyle='darkcontent' backgroundColor="#f8e499"/>
       <Stack.Navigator>
         <Stack.Screen
           name="Home"
@@ -98,11 +102,6 @@ export default function App() {
           options={{ headerShown: false }} // Hide the header bar for this screen
         />
 
-        <Stack.Screen
-            name="TableauDeBord"
-            component={TableauDeBordPage}
-            options={{ headerShown: false }} // Hide the header bar for this screen
-        />
       </Stack.Navigator>
     </NavigationContainer>
   );

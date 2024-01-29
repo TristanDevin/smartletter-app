@@ -8,8 +8,6 @@ import { useNavigation } from "@react-navigation/native";
 
 export default function IndexPage() {
   
-  const [popupButtonVisible, setPopupButtonVisible] = useState(false);
-  const [popupSettingsVisible, setpopupSettingsVisible] = useState(false);
   const navigation = useNavigation();
   const [jsonData, setJsonData] = useState(null);
   const [totalLetter, setTotalLetter] = useState(0);
@@ -20,34 +18,12 @@ export default function IndexPage() {
 
 
   const handleButtonClick = () => {
-    /*
-    jsonData.forEach((record) => {
-      // Update properties of the record
-      if (record.retrieved === false ){
-        modifyDataTrue(record);
-        record.retrieved = true;
-      };
-    });
-    //fetchData();
-    getTotal(jsonData);
-    */
     deleteAllData();
-
-    
    };
 
 
-  const handleSettingsClick = () => {
-    setpopupSettingsVisible(true);
-  };
-
   const handleRefresh = () => {
     fetchData();
-  };
-
-
-  const handleCloseClick = () => {
-    setpopupSettingsVisible(false);
   };
 
   const getTotal = (data) => {
@@ -110,59 +86,6 @@ export default function IndexPage() {
   };
 
 
-
-  const modifyDataTrue = async (item) => {
-    try {
-      const getAllUrl =
-        "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages";
-      const updateUrl =
-        "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/message";
-
-      // Fetch the data to find messages with the id
-      const response = await fetch(getAllUrl);
-      const data = await response.json();
-      //getTotal(data);
-
-      // Modify each specific record as needed
-
-      data.forEach((record) => {
-        // Update properties of the record
-        if (record.id === item.id){
-          record.retrieved = true;
-        };
-        const fullDate = (new Date(record.receivedAt));
-        fullDate.setHours(fullDate.getHours() + 1);
-        record.receivedAt = fullDate.toISOString();
-        
-      });
-
-
-      const sortedData = data.sort((a, b) => b.receivedAt - a.receivedAt);
-      setJsonData(sortedData);
-
-
-      // Use the PUT method to update the specific record
-      const updateResponse = await fetch(updateUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({ id: item.id, retrieved: true }),
-      });
-
-      if (updateResponse.ok) {
-        console.log("Record updated successfully");
-        //console.log(updateResponse);
-      } else {
-        console.error("Error updating record:", updateResponse.statusText);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-
   const fetchData = async () => {
     try {
       // Using fetch API
@@ -180,9 +103,7 @@ export default function IndexPage() {
 
   };
   useEffect(() => {
-    
-    
-
+  
     const focusListener = navigation.addListener('focus', () => {
       // Call your function here
       fetchData();
@@ -231,13 +152,6 @@ export default function IndexPage() {
               <Text style={styles.menuText} > Historique </Text>
             </TouchableOpacity>
         </View>
-
-        {/*
-        <View style={styles.menuContainer}>
-            <TouchableOpacity onPress={() => navigation.navigate('TableauDeBord')}>
-              <Text style={styles.menuText} >Tableau de bord</Text>
-            </TouchableOpacity>
-        </View>*/}
       </View>
 
       {/* Main Content */}
@@ -311,110 +225,6 @@ export default function IndexPage() {
 
       {/* Footer Bar */}
       
-      {/* Popup */}
-      {popupButtonVisible && (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "white",
-              padding: 20,
-              borderRadius: 8,
-              shadowColor: "#000",
-              shadowOffset: { width: 2, height: 2 },
-              shadowOpacity: 0.5,
-              shadowRadius: 4,
-            }}
-          >
-            <Text>TODO </Text>
-            <Text>Ce bouton permet de cocher tous les messages </Text>
-          </View>
-        </View>
-      )}
-      {/* Popup */}
-      {popupSettingsVisible && (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "#f8e499",
- 
-              borderRadius: 8,
-              shadowColor: "#000",
-              shadowOffset: { width: 2, height: 2 },
-              shadowOpacity: 0.5,
-              shadowRadius: 4,
-            }}
-          >
-            <View
-            style={{
-              borderTopLeftRadius: 8,
-              borderTopRightRadius: 8,
-              alignSelf:"stretch",
-              backgroundColor: "#1d4274",
-              height: 50,
-              marginBottom:20
-            }}
-            >
-              <Text style= {[styles.menuText, {marginTop:10}]}>REGLAGES </Text>
-            </View>
-
-            <View
-                style={{
-                  marginVertical:20,
-                  marginHorizontal:20,
-                  alignSelf:"center",
-                }}
-              >
-                
-                  <Text style= {[styles.menuTextSelected]}>TODO </Text>
-                  <Text style= {[styles.menuTextSelected]}>Ajouter les réglages </Text>
-                
-              </View>
-            <TouchableOpacity onPress={handleCloseClick}>
-              <View
-                style={{
-                  borderRadius: 8,
-                  alignSelf:"center",
-                  justifyContent:"center",
-                  backgroundColor: "#1d4274",
-                  height: 40,
-                  marginVertical:20,
-                  paddingHorizontal:10
-                }}
-              >
-                
-                  <Text style= {[styles.menuText]}>Fermer </Text>
-                
-                
-              </View>
-            </TouchableOpacity>
-          </View>
-          
-        </View>
-      )}
     </View>
   );
 }
@@ -422,8 +232,8 @@ export default function IndexPage() {
 
 const styles = StyleSheet.create({
     topbar: {
-        height: 100,
-        paddingTop:40,
+        paddingTop: Platform.OS === 'ios' ? 40:10,
+        height: Platform.OS === 'ios' ? 100:70,
         flexDirection :"row",
         backgroundColor: "#f8e499",
         justifyContent: "space-between",

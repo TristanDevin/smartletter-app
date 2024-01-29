@@ -18,9 +18,6 @@ import { useNavigation } from "@react-navigation/native";
 
 const HistoriquePage = () => {
   
-  const [popupTrashVisible, setPopupTrashVisible] = useState(false);
-  const [popupSettingsVisible, setPopupSettingsVisible] = useState(false);
-  const [currentItem, setCurrentItem] = useState(null);
   const [jsonData, setJsonData] = useState(null);
 
   const navigation = useNavigation();
@@ -53,28 +50,8 @@ const HistoriquePage = () => {
 
 
   const handleTrashClick = (item) => {
-    //setCurrentItem(item);
-    //setPopupTrashVisible(true);
     console.log("delete ", item.id)
     deleteData(item);
-  };
-
-
-  const handleYesClick = () => {
-    setPopupTrashVisible(false);
-    deleteData(currentItem);
-  };
-
-  const handleNoClick = () => {
-    setPopupTrashVisible(false);
-  };
-
-  const handleSettingsClick = () => {
-    setPopupSettingsVisible(true);
-  };
-
-  const handleCloseClick = () => {
-    setPopupSettingsVisible(false);
   };
 
   const handleRefresh = () => {
@@ -109,6 +86,7 @@ const HistoriquePage = () => {
   }) => {
     if (letter == "0") {
       return (
+        
         <View
           style={[
             styles.item,
@@ -121,24 +99,7 @@ const HistoriquePage = () => {
          
           <Text style={[styles.itemText, { color: textColor }]}>{time}</Text>
           <Text style={[styles.itemText, { color: textColor }]}>{date}</Text>
-
-          {/*    
-          <TouchableOpacity onPress={() => handleTrashClick(item)}>
-            <View>
-              <View
-                style={{
-                  width: 20,
-                  height: 20,
-                  borderRadius: 5,
-                  borderWidth: 2,
-                  borderColor: "#1d4274",
-                  marginRight: 15,
-                  backgroundColor: item.retrieved ? "#1d4274" : "#f8e499",
-                }}
-              />
-            </View>
-          </TouchableOpacity>
-         */}
+          {/*
          <TouchableOpacity onPress={() => handleTrashClick(item)}>
             <View>
               <Ionicons 
@@ -153,8 +114,7 @@ const HistoriquePage = () => {
               
             </View>
           </TouchableOpacity>
-
-
+              */}
         </View>
       );
     } else if (colis == "0") {
@@ -172,25 +132,7 @@ const HistoriquePage = () => {
           
           <Text style={[styles.itemText, { color: textColor }]}>{time}</Text>
           <Text style={[styles.itemText, { color: textColor }]}>{date}</Text>
-
-          {/*    
-          <TouchableOpacity onPress={() => handleTrashClick(item)}>
-            <View>
-              <View
-                style={{
-                  width: 20,
-                  height: 20,
-                  borderRadius: 5,
-                  borderWidth: 2,
-                  borderColor: "#1d4274",
-                  marginRight: 15,
-                  backgroundColor: item.retrieved ? "#1d4274" : "#f8e499",
-                }}
-              />
-            </View>
-          </TouchableOpacity>
-         */}
-  
+          {/*
           <TouchableOpacity onPress={() => handleTrashClick(item)}>
             <View>
               <Ionicons 
@@ -199,12 +141,12 @@ const HistoriquePage = () => {
                 size={30}
                 style={{
                   marginRight: 10
-               
                 }}>
               </Ionicons>
               
             </View>
           </TouchableOpacity>
+              */}
         </View>
       );
     } else {
@@ -215,44 +157,18 @@ const HistoriquePage = () => {
             { backgroundColor , flexDirection: "row", height: 100 },
           ]}
         >
-          <View
-            style={{ flexDirection: "column", justifyContent: "space-around" }}
-          >
-          
-          </View>
 
           <View
-            style={{ flexDirection: "column", marginTop: 0, marginBottom: 0 }}
+            style={{flexDirection: "column",  marginLeft:20}}
           >
-            <Ionicons color="#1d4274" name="cube-outline" size={40} style={[
-            { marginLeft:20 },
-          ]}></Ionicons>
-            <Ionicons color="#1d4274" name="mail-outline" size={40} style={[
-            { marginLeft:20 },
-          ]}></Ionicons>
+              <Ionicons color="#1d4274" name="cube-outline" size={40}>
+              </Ionicons>
+              <Ionicons color="#1d4274" name="mail-outline" size={40} ></Ionicons>
           </View>
 
           <Text style={[styles.itemText, { color: textColor }]}>{time}</Text>
           <Text style={[styles.itemText, { color: textColor }]}>{date}</Text>
-
           {/*
-          <TouchableOpacity onPress={() => handleTrashClick(item)}>
-            <View>
-              <View
-                style={{
-                  width: 20,
-                  height: 20,
-                  borderRadius: 5,
-                  borderWidth: 2,
-                  borderColor: "#1d4274",
-                  marginRight: 15,
-                  backgroundColor: item.retrieved ? "#1d4274" : "#f8e499",
-                }}
-              />
-            </View>
-          </TouchableOpacity>
-              */}
-
           <TouchableOpacity onPress={() => handleTrashClick(item)}>
             <View>
               <Ionicons 
@@ -261,14 +177,11 @@ const HistoriquePage = () => {
                 size={30}
                 style={{
                   marginRight: 10
-               
                 }}>
               </Ionicons>
-              
             </View>
           </TouchableOpacity>
-
-
+              */}
         </View>
       );
     }
@@ -355,66 +268,6 @@ const HistoriquePage = () => {
     }
   };
 
-  const modifyData = async (item, flag) => {
-    try {
-      const getAllUrl =
-        "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/messages";
-      const updateUrl =
-        "http://smart-letter-tc2023.swedencentral.cloudapp.azure.com:8080/message";
-
-      // Fetch the data to find messages with the id
-      const response = await fetch(getAllUrl);
-      const data = await response.json();
-
-      // Filter the messages with the id
-      //const filteredData = data.filter((message) => message.id === item.id);
-
-      // Modify each specific record as needed
-  
-      data.forEach((record) => {
-        // Update properties of the record
-        if (record.id === item.id){
-          record.retrieved = flag;
-        };
-        const fullDate = (new Date(record.receivedAt));
-        fullDate.setHours(fullDate.getHours() + 1);
-        record.receivedAt = fullDate.toISOString();
-      });
-      const sortedData = data.sort((a, b) => new Date(b.receivedAt) - new Date(a.receivedAt));
-      setJsonData(sortedData);
-
-
-      // Use the PUT method to update the specific record
-      const updateResponse = await fetch(updateUrl, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-        },
-        body: JSON.stringify({ id: item.id, retrieved: flag }),
-      });
-
-      if (updateResponse.ok) {
-        console.log("Record updated successfully");
-        //console.log(updateResponse);
-      } else {
-        console.error("Error updating record:", updateResponse.statusText);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
-
-  const toggleCheckbox = (item) => {
-    if (item.retrieved ) { 
-      modifyData(item, false);
-      console.log("true ", item.id)
-    } else {
-      modifyData(item, true);
-      console.log("false ", item.id)
-      //item.recupere = false;
-    }
-  };
 
   const renderItem = ({ item }) => {
     const backgroundColor = item.retrieved ? "#919191" : "#f8e499";
@@ -464,28 +317,24 @@ const HistoriquePage = () => {
         <View style={styles.menuContainerSelected}>
           <Text style={styles.menuTextSelected}>Historique</Text>
         </View>
-        {/*
-        <View style={styles.menuContainer}>
-          <TouchableOpacity onPress={() => navigation.navigate('TableauDeBord')}>
-            <Text style={styles.menuText} >Tableau de bord</Text>
-          </TouchableOpacity>
-        </View>*/}
       </View>
     
       {/* Main Content */}
 
       {/* Titles */}
       <View style={styles.containerBar}>
-        <Text style={[styles.containerBarText, { }]}>Quantit&#233;</Text>
-        <Text style={[styles.containerBarText, { }]}>Heure</Text>
-        <Text style={[styles.containerBarText, {}]}>Date</Text>
+        <Text style={[styles.containerBarText, {marginLeft:10 }]}>Type</Text>
+        <Text style={[styles.containerBarText, {marginRight:20 }]}>Heure</Text>
+        <Text style={[styles.containerBarText, {marginRight:30}]}>Date</Text>
         
+        {/*
         <Text style={[styles.containerBarText, {  }]}>
           Supprimer
-        </Text>
+        </Text> */}
       </View>
 
       <View >
+
         {/* Item list*/}
         <View style={{}}>
           <SafeAreaView style={styles.container}>
@@ -515,119 +364,6 @@ const HistoriquePage = () => {
           </TouchableOpacity>     
       </View>
 
-      {/* Popup supprimer*/}
-      {popupTrashVisible && (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "white",
-              padding: 20,
-              borderRadius: 8,
-              shadowColor: "#000",
-              shadowOffset: { width: 2, height: 2 },
-              shadowOpacity: 0.5,
-              shadowRadius: 4,
-            }}
-          >
-            <Text>Voulez-vous vraiment supprimer l'élément? </Text>
-            <Text style = {{alignSelf:"center", marginBottom:10}}>(Cette action est irréversible)</Text>
-            <View style = {{flexDirection:"row", justifyContent:"space-around"}}>
-              <TouchableOpacity onPress={ handleYesClick}>
-              <Text>Oui</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={ handleNoClick}>
-              <Text>Non</Text>
-              </TouchableOpacity>
-            </View>
-            
-          </View>
-        </View>
-      )}
-      {/* Popup Reglages*/}
-      {popupSettingsVisible && (
-        <View
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-          }}
-        >
-          <View
-            style={{
-              backgroundColor: "#f8e499",
- 
-              borderRadius: 8,
-              shadowColor: "#000",
-              shadowOffset: { width: 2, height: 2 },
-              shadowOpacity: 0.5,
-              shadowRadius: 4,
-            }}
-          >
-            <View
-            style={{
-              borderTopLeftRadius: 8,
-              borderTopRightRadius: 8,
-              alignSelf:"stretch",
-              backgroundColor: "#1d4274",
-              height: 50,
-              marginBottom:20
-            }}
-            >
-              <Text style= {[styles.menuText, {marginTop:10}]}>REGLAGES </Text>
-            </View>
-
-            <View
-                style={{
-                  marginVertical:20,
-                  marginHorizontal:20,
-                  alignSelf:"center",
-                }}
-              >
-                
-                  <Text style= {[styles.menuTextSelected]}>TODO </Text>
-                  <Text style= {[styles.menuTextSelected]}>Ajouter les réglages </Text>
-                
-              </View>
-            <TouchableOpacity onPress={handleCloseClick}>
-              <View
-                style={{
-                  borderRadius: 8,
-                  alignSelf:"center",
-                  justifyContent:"center",
-                  backgroundColor: "#1d4274",
-                  height: 40,
-                  marginVertical:20,
-                  paddingHorizontal:10
-                }}
-              >
-                
-                  <Text style= {[styles.menuText]}>Fermer </Text>
-                
-                
-              </View>
-            </TouchableOpacity>
-          </View>
-          
-        </View>
-      )}
-
       {/* Footer Bar */}
       <View
         style={{
@@ -646,8 +382,8 @@ const HistoriquePage = () => {
 
 const styles = StyleSheet.create({
   topbar: {
-      paddingTop: 40,
-      height:100 ,
+      paddingTop: Platform.OS === 'ios' ? 40:10,
+      height: Platform.OS === 'ios' ? 100:70,
       flexDirection: "row",
       backgroundColor: "#f8e499",
       justifyContent: "space-between",
