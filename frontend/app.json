@@ -35,7 +35,16 @@
             "deploymentTarget": "13.4"
           }
         }
-      ]
+      ],
+       "expo-notifications",
+        {
+          "icon": "./local/assets/notification-icon.png",
+          "color": "#000000",
+          "androidMode": "default",
+          "androidCollapsedTitle": "SmartLetter",
+          "androidAllowWhileIdle": true
+        }
+
     ],
     "web": {
       "favicon": "./assets/favicon.png"
