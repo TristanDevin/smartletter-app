@@ -24,13 +24,13 @@ export default ({ config }) => {
                 },
             ],
             [
-                "expo-notifications",
+                    "expo-notifications",
                 {
-                    icon: "./local/assets/notification-icon.png",
+                    icon: "./assets/favicon.png",
                     color: "#000000",
-                    androidMode: "default",
-                    androidCollapsedTitle: "SmartLetter",
-                    androidAllowWhileIdle: true,
+                        androidMode: "default",
+                        androidCollapsedTitle: "SmartLetter",
+                        androidAllowWhileIdle: true,
                 },
             ],
         ],
